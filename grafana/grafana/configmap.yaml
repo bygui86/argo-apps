@@ -1,0 +1,118 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+data:
+  # general
+  GF_INSTALL_PLUGINS: "grafana-kubernetes-app,camptocamp-prometheus-alertmanager-datasource,grafana-piechart-panel,grafana-polystat-panel,agenty-flowcharting-panel"
+  # GF_SERVER_PROTOCOL: https
+  # GF_SERVER_CERT_FILE: /var/lib/grafana/certs/tls.crt
+  # GF_SERVER_CERT_KEY: /var/lib/grafana/certs/tls.key
+  # GF_SERVER_ENABLE_GZIP: "true"
+  # GF_SECURITY_STRICT_TRANSPORT_SECURITY: "true"
+  # GF_SECURITY_COOKIE_SECURE: "true"
+  
+  # datasources
+  PROMETHEUS_URL: "http://prometheus.monitoring.svc.cluster.local:9090"
+  ALERTMANAGER_URL: "http://alertmanager.monitoring.svc.cluster.local:9093"
+  LOKI_URL: "http://loki.logging.svc.cluster.local:3100"
+  LOKI_PROMETHEUS_URL: "http://loki.logging.svc.cluster.local:3100/loki"
+  # ELASTICSEARCH_URL: "https://logging-es-http.logging.svc.cluster.local:9200"
+  # ELASTICSEARCH_INDEX: "sbt*"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+data:
+  datasources.yaml: |-
+    apiVersion: 1
+
+    datasources:
+
+    - name: prometheus
+      type: prometheus
+      orgId: 1
+      url: $PROMETHEUS_URL
+      access: proxy
+      isDefault: true
+      version: 1
+      editable: true
+
+    - name: prometheus-alertmanager
+      type: camptocamp-prometheus-alertmanager-datasource
+      orgId: 1
+      url: $ALERTMANAGER_URL
+      access: proxy
+      isDefault: false
+      version: 1
+      editable: true
+
+    - name: loki
+      type: loki
+      orgId: 1
+      url: $LOKI_URL
+      access: proxy
+      isDefault: false
+      version: 1
+      editable: true
+
+    - name: loki-prometheus
+      type: prometheus
+      orgId: 1
+      url: $LOKI_PROMETHEUS_URL
+      access: proxy
+      isDefault: false
+      version: 1
+      editable: true
+
+    - name: google-cloud-monitoring
+      type: stackdriver
+      orgId: 1
+      url: ""
+      access: proxy
+      isDefault: false
+      version: 1
+      editable: true
+      jsonData:
+        authenticationType: "gce"
+
+  # - name: elasticsearch
+  #   type: elasticsearch
+  #   orgId: 1
+  #   url: $ELASTICSEARCH_URL
+  #   access: proxy
+  #   basicAuth: true
+  #   basicAuthUser: $ELASTICSEARCH_USER
+  #   database: $ELASTICSEARCH_INDEX
+  #   jsonData:
+  #     tlsSkipVerify: true
+  #     esVersion: 70
+  #     timeField: time
+  #     logMessageField: msg
+  #     logLevelField: level
+  #   secureJsonData:
+  #     basicAuthPassword: $ELASTICSEARCH_PASSWORD
+  #   isDefault: false
+  #   version: 1
+  #   editable: true
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards
+data:
+  dashboards.yaml: |-
+    apiVersion: 1
+
+    providers:
+      - name: dashboards
+        type: file
+        updateIntervalSeconds: 300
+        options:
+          path: "/etc/dashboards"
+          foldersFromFilesStructure: true

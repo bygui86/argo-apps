@@ -1,0 +1,12 @@
+
+resources:
+  - networking-cluster.yaml
+  - networking-kube-dns.yaml
+  - networking-namespace-by-pod.yaml
+  - networking-namespace-by-workload.yaml
+  - networking-pod.yaml
+  - networking-workload.yaml
+
+commonLabels:
+  grafanaFolder: kubernetes
+  k8sArea: networking

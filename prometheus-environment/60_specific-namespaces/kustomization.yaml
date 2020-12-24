@@ -1,0 +1,12 @@
+
+resources:
+  - roleBindings/
+  - roles/
+
+commonLabels:
+  app: prometheus
+  domain: monitoring
+  feature: prometheus
+
+commonAnnotations:
+  version: v2.22.1

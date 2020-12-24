@@ -1,0 +1,22 @@
+
+resources:
+  - ast.yaml
+  - auditing.yaml
+  - broker.yaml
+  - cert-manager.yaml
+  - dbf.yaml
+  - default.yaml
+  - die.yaml
+  - hdp.yaml
+  - kube-system.yaml
+  - kubed.yaml
+  - logging.yaml
+  - mst.yaml
+  - networking.yaml
+  - pnl.yaml
+  - polaris.yaml
+  - sig-prod.yaml
+  - support.yaml
+  - tee.yaml
+  - tracing.yaml
+  - trade-sched.yaml

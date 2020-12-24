@@ -1,0 +1,8 @@
+
+resources:
+  - gcp-gce-vms.yaml
+  - gcp-gke-cluster.yaml
+  - gcp-http-lb.yaml
+
+commonLabels:
+  grafanaFolder: cloud

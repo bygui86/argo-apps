@@ -1,0 +1,6 @@
+
+resources:
+  - consul.yaml
+
+commonLabels:
+  grafanaFolder: support

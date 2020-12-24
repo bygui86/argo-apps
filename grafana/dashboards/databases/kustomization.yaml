@@ -1,0 +1,8 @@
+
+resources:
+  - instaclustr-cassandra.yaml
+  - mongodb.yaml
+  - postgresql.yaml
+
+commonLabels:
+  grafanaFolder: databases

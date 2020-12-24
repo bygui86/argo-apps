@@ -1,0 +1,48 @@
+# original from coreos
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: prometheus
+  annotations:
+    seccomp.security.alpha.kubernetes.io/defaultProfileName:  runtime/default
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: runtime/default
+    apparmor.security.beta.kubernetes.io/defaultProfileName:  runtime/default
+    apparmor.security.beta.kubernetes.io/allowedProfileNames: runtime/default
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+    - ALL
+  volumes:
+    - configMap
+    - secret
+    - persistentVolumeClaim
+    # - emptyDir
+    # - projected
+    # - downwardAPI
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  hostPorts:
+    - min: 9090
+      max: 9090
+  runAsUser:
+    rule: MustRunAsNonRoot
+  runAsGroup:
+    rule: MustRunAs
+    ranges:
+      - min: 1000
+        max: 65535
+  supplementalGroups:
+    rule: MustRunAs
+    ranges:
+      - min: 1000
+        max: 65535
+  fsGroup:
+    rule: MustRunAs
+    ranges:
+      - min: 1000
+        max: 65535
+  seLinux:
+    rule: RunAsAny
+  readOnlyRootFilesystem: true

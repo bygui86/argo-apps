@@ -1,0 +1,8 @@
+
+resources:
+  - sbt-ast.yaml
+  - sbt-die-hdp-mst.yaml
+  - sbt-tee.yaml
+
+commonLabels:
+  grafanaFolder: alerting

@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-operator
+  annotations:
+    prometheusConfigReloader: "quay.io/prometheus-operator/prometheus-config-reloader:v0.44.0"
+    kubeRbacProxy: "quay.io/brancz/kube-rbac-proxy:v0.8.0"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus-operator
+  template:
+    metadata:
+      labels:
+        app: prometheus-operator
+    spec:
+      serviceAccountName: prometheus-operator
+      securityContext:
+        runAsUser: 1001
+      containers:
+        - name: prometheus-operator
+          # v0.44.0
+          image: quay.io/prometheus-operator/prometheus-operator@sha256:983627001c89bc6d7d881939c0c314c72ee26256004e8890c9e31efc498d7649
+          imagePullPolicy: IfNotPresent
+          args:
+            - -log-format=json
+            - --kubelet-service=kube-system/kubelet
+            # v0.44.0
+            - --prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader@sha256:6659cb3d97b5f846b5e1651ca1ab95189509f899713c727143f1bc50cc6e57cf
+          ports:
+            - name: http
+              containerPort: 8080
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 200Mi
+          # ADDITIONALS from SBT
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+        - name: kube-rbac-proxy
+          # v0.8.0
+          image: quay.io/brancz/kube-rbac-proxy@sha256:f5a13092303d1888a1b05b24a8ec15059561c266dd2b35a0be1e92e4d39ac926
+          imagePullPolicy: IfNotPresent
+          args:
+            - --logtostderr
+            - --secure-listen-address=:8443
+            - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
+            - --upstream=http://127.0.0.1:8080/
+          ports:
+            - name: https
+              containerPort: 8443
+          # ADDITIONALS from SBT
+          resources:
+            requests:
+              cpu: 10m
+              memory: 20Mi
+            limits:
+              cpu: 20m
+              memory: 40Mi
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: monitoring
+          effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: dedicated
+                    operator: In
+                    values:
+                      - monitoring

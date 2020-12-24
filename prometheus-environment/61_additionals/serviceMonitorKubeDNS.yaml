@@ -1,0 +1,32 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kube-dns
+  namespace: kube-system
+  labels:
+    app: prometheus
+    domain: monitoring
+    feature: prometheus
+    monitoredComponent: kube-dns
+  annotations:
+    version: v2.22.1
+spec:
+  jobLabel: k8s-app
+  namespaceSelector:
+    matchNames:
+      - kube-system
+  selector:
+    matchLabels:
+      app: prometheus
+      domain: monitoring
+      feature: prometheus
+      component: kube-dns
+  endpoints:
+    - port: kubedns-metrics
+      interval: 30s
+      scrapeTimeout: 29s
+      honorLabels: true
+    - port: sidecar-metrics
+      interval: 30s
+      scrapeTimeout: 29s
+      honorLabels: true

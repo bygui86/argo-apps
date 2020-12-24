@@ -1,0 +1,10 @@
+
+resources:
+  - nats-server.yaml
+  - strimzi-kafka-exporter.yaml
+  - strimzi-kafka.yaml
+  - strimzi-operators.yaml
+  - strimzi-zookeeper.yaml
+
+commonLabels:
+  grafanaFolder: brokers

@@ -1,0 +1,28 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kube-state-metrics
+spec:
+  jobLabel: k8s-app
+  selector:
+    matchLabels:
+      app: kube-state-metrics
+  endpoints:
+    - port: https-main
+      scheme: https
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tlsConfig:
+        insecureSkipVerify: true
+      interval: 30s
+      scrapeTimeout: 29s
+      honorLabels: true
+      relabelings:
+        - action: labeldrop
+          regex: (pod|service|endpoint|namespace)
+    - port: https-self
+      scheme: https
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tlsConfig:
+        insecureSkipVerify: true
+      interval: 30s
+      scrapeTimeout: 29s

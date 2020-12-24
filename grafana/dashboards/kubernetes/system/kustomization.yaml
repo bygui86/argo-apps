@@ -1,0 +1,11 @@
+
+resources:
+  - system-api-server.yaml
+  - system-controller-manager.yaml
+  - system-kube-proxy.yaml
+  - system-kubelet.yaml
+  - system-scheduler.yaml
+
+commonLabels:
+  grafanaFolder: kubernetes
+  k8sArea: system

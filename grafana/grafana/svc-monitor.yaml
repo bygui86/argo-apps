@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: grafana
+spec:
+  selector:
+    matchLabels:
+      app: grafana
+  namespaceSelector:
+    matchNames:
+      - monitoring
+  endpoints:
+    - port: http-ui
+      interval: 15s
+      scrapeTimeout: 14s

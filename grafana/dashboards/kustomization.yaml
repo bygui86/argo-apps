@@ -1,0 +1,27 @@
+
+resources:
+  # - alerting/
+  - brokers/
+  - cloud/
+  - databases/
+  # - indexers/
+  - kubernetes/
+  - logging/
+  - monitoring/
+  - networking/
+  - sbt-domains/
+  - security/
+  - services/
+  - support/
+
+namePrefix: grafana-dashboard-
+
+commonLabels:
+  app: grafana
+  domain: monitoring
+  group: dashboards
+  feature: grafana
+  component: dashboard
+
+commonAnnotations:
+  grafanaVersion: "7.3.4"

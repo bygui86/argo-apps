@@ -1,0 +1,20 @@
+
+resources:
+  - configmap.yaml
+  - secret.yaml
+  - deployment.yaml
+  - service.yaml
+  - svc-monitor.yaml
+
+commonLabels:
+  app: grafana
+  domain: monitoring
+  group: dashboards
+  feature: grafana
+  component: grafana
+
+commonAnnotations:
+  version: "7.3.4"
+
+# WARN: remember to keep pvc.yaml aligned with all changes made in this file
+# WARN: remember to keep dashboard/kustomization.yaml aligned with all changes made in this file

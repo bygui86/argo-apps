@@ -1,0 +1,121 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prod
+spec:
+  # DEPRECATED
+  # baseImage: quay.io/prometheus/prometheus
+  # sha: 0eac377a90d361be9da35b469def699bcd5bb26eab8a6e9068516a9910717d58 # WARN: do not specify sha256, it's already provided by prometheus-operator
+  # v2.23.0
+  image: quay.io/prometheus/prometheus@sha256:0eac377a90d361be9da35b469def699bcd5bb26eab8a6e9068516a9910717d58
+  replicas: 1
+
+  logFormat: json
+  logLevel: info
+  
+  resources:
+    requests:
+      cpu: "3"
+      memory: 6G
+    limits:
+      cpu: "4"
+      memory: 8G
+  
+  # How long to retain samples in storage.
+  # Overrides "storage.tsdb.retention" if this flag is set to anything other than default.
+  retention: 60d
+  # [EXPERIMENTAL] Maximum number of bytes that can be stored for blocks. 
+  # Units supported: KB, MB, GB, TB, PB. This flag is experimental and can be changed in future releases.
+  retentionSize: 500GB
+
+  serviceAccountName: prometheus
+
+  securityContext:
+    runAsUser: 1001
+    fsGroup: 1001
+
+  podMetadata:
+    name: prometheus
+    labels:
+      # INFO: reserved for operating
+      # app: prometheus
+      # WARN: not added by the operator in version 0.3x.x
+      domain: monitoring
+      feature: prometheus
+
+  alerting:
+    alertmanagers:
+      - name: alertmanager
+        namespace: monitoring
+        port: web
+
+  # empty = all
+  ruleNamespaceSelector: {}
+  ruleSelector:
+    matchLabels:
+      # app: prometheus
+      # domain: monitoring
+      role: alert-rules
+
+  # empty = all
+  podMonitorNamespaceSelector: {}
+  # empty = no label selector
+  podMonitorSelector: {}
+
+  # empty = all
+  serviceMonitorNamespaceSelector: {}
+  # empty = no label selector
+  serviceMonitorSelector: {}
+  
+  # additionalScrapeConfigs:
+  #   name: prometheus-additional
+  #   key: prometheus-additional.yaml
+  
+  storage:
+    volumeClaimTemplate:
+      metadata:
+        name: prometheus
+        labels:
+          # INFO: reserved for operating
+          # app: prometheus
+          # WARN: not added by the operator in version 0.3x.x
+          domain: monitoring
+          feature: prometheus
+          type: ssd
+          expandable: "true"
+      spec:
+        storageClassName: ssd-expandable
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 750Gi
+
+  nodeSelector:
+    kubernetes.io/os: linux
+  tolerations:
+    - key: dedicated
+      operator: Equal
+      value: monitoring
+      effect: NoSchedule
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: dedicated
+                operator: In
+                values:
+                  - monitoring
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app: prometheus
+                domain: monitoring
+                feature: prometheus
+            namespaces:
+              - monitoring
+            topologyKey: kubernetes.io/hostname
+          weight: 100

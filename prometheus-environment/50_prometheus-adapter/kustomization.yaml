@@ -1,0 +1,32 @@
+
+namespace: monitoring
+
+resources:
+  - apiService.yaml
+  - serviceAccount.yaml
+  - clusterRole.yaml
+  - clusterRoleAggregatedMetricsReader.yaml
+  - clusterRoleBinding.yaml
+  - clusterRoleBindingDelegator.yaml
+  - clusterRoleServerResources.yaml
+  - roleBindingAuthReader.yaml
+  - configMap.yaml
+  - deployment.yaml
+  - service.yaml
+
+commonLabels:
+  app: prometheus-adapter
+  domain: monitoring
+  feature: prometheus
+
+commonAnnotations:
+  version: directxman12-v0.8.20
+
+patchesJson6902:
+  - target:
+      group: rbac.authorization.k8s.io
+      version: v1
+      kind: RoleBinding
+      name: resource-metrics-auth-reader
+      namespace: monitoring
+    path: kustomization-patch_auth-reader-namespace.yaml

@@ -1,0 +1,22 @@
+
+namespace: monitoring
+
+resources:
+  - serviceAccount.yaml
+  - clusterRole.yaml
+  - clusterRoleBinding.yaml
+  - deployment.yaml
+  - service.yaml
+  - serviceMonitor.yaml
+
+commonLabels:
+  app: prometheus-operator
+  domain: monitoring
+  group: operators
+  feature: prometheus
+  component: controller
+
+commonAnnotations:
+  version: v0.44.0
+
+# WARN: updating labels or annotations, remember to update also ../../11_required-crds/10_prometheus-crds/kustomization.yaml

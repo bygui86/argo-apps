@@ -1,0 +1,2841 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: die-latency
+data:
+  die-latency.json: |-
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": "prometheus",
+            "enable": true,
+            "expr": "time() == BOOL timestamp(rate(kube_pod_container_status_restarts_total{job=\"kube-state-metrics\", namespace=\"die\", pod=~\"die-exchange-collector-.*\"}[1m]) > 0)",
+            "hide": false,
+            "iconColor": "#C4162A",
+            "limit": 100,
+            "name": "Restarts",
+            "showIn": 0,
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "gnetId": null,
+      "graphTooltip": 0,
+      "id": 57,
+      "iteration": 1595516620647,
+      "links": [],
+      "panels": [
+        {
+          "collapsed": false,
+          "datasource": null,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 17,
+          "panels": [],
+          "title": "Overview",
+          "type": "row"
+        },
+        {
+          "datasource": "prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "#EAB839",
+                    "value": 1000
+                  },
+                  {
+                    "color": "red",
+                    "value": 2000
+                  }
+                ]
+              },
+              "unit": "ms"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 12,
+            "x": 0,
+            "y": 1
+          },
+          "id": 24,
+          "options": {
+            "displayMode": "gradient",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "mean"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showUnfilled": true
+          },
+          "pluginVersion": "7.1.0",
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\"}[1m])) by (le))",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "ohlcv",
+              "refId": "A"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\"}[1m])) by (le))",
+              "interval": "",
+              "legendFormat": "ticker",
+              "refId": "B"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\"}[1m])) by (le))",
+              "interval": "",
+              "legendFormat": "trade",
+              "refId": "C"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\"}[1m])) by (le))",
+              "interval": "",
+              "legendFormat": "perpetual",
+              "refId": "D"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "99th percentile",
+          "transparent": true,
+          "type": "bargauge"
+        },
+        {
+          "datasource": "prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "#EAB839",
+                    "value": 750
+                  },
+                  {
+                    "color": "red",
+                    "value": 1000
+                  }
+                ]
+              },
+              "unit": "ms"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 12,
+            "x": 12,
+            "y": 1
+          },
+          "id": 23,
+          "options": {
+            "displayMode": "gradient",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "mean"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showUnfilled": true
+          },
+          "pluginVersion": "7.1.0",
+          "targets": [
+            {
+              "expr": "sum(rate(global_event_handling_time_milliseconds_sum{dataset=\"ohlcv\",source=\"$source\"}[1m])) / sum(rate(global_event_handling_time_milliseconds_count{dataset=\"ohlcv\",source=\"$source\"}[1m]))",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "ohlcv",
+              "refId": "A"
+            },
+            {
+              "expr": "sum(rate(global_event_handling_time_milliseconds_sum{dataset=\"ticker\",source=\"$source\"}[1m])) / sum(rate(global_event_handling_time_milliseconds_count{dataset=\"ticker\",source=\"$source\"}[1m]))",
+              "interval": "",
+              "legendFormat": "ticker",
+              "refId": "B"
+            },
+            {
+              "expr": "sum(rate(global_event_handling_time_milliseconds_sum{dataset=\"trade\",source=\"$source\"}[1m])) / sum(rate(global_event_handling_time_milliseconds_count{dataset=\"trade\",source=\"$source\"}[1m]))",
+              "interval": "",
+              "legendFormat": "trade",
+              "refId": "C"
+            },
+            {
+              "expr": "sum(rate(global_event_handling_time_milliseconds_sum{dataset=\"perpetual\",source=\"$source\"}[1m])) / sum(rate(global_event_handling_time_milliseconds_count{dataset=\"perpetual\",source=\"$source\"}[1m]))",
+              "interval": "",
+              "legendFormat": "perpetual",
+              "refId": "D"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Average duration",
+          "transparent": true,
+          "type": "bargauge"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 0,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 18,
+            "w": 12,
+            "x": 0,
+            "y": 7
+          },
+          "hiddenSeries": false,
+          "id": 30,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "nullPointMode": "null",
+          "percentage": false,
+          "pluginVersion": "7.1.0",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [
+            {
+              "alias": "ohlcv",
+              "color": "#37872D"
+            },
+            {
+              "alias": "ticker",
+              "color": "#FADE2A"
+            },
+            {
+              "alias": "trade",
+              "color": "#5794F2"
+            },
+            {
+              "alias": "perpetual",
+              "color": "#B877D9"
+            }
+          ],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\"}[1m])) by (le))",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "ohlcv",
+              "refId": "A"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\"}[1m])) by (le))",
+              "interval": "",
+              "legendFormat": "ticker",
+              "refId": "B"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\"}[1m])) by (le))",
+              "interval": "",
+              "legendFormat": "trade",
+              "refId": "C"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\"}[1m])) by (le))",
+              "interval": "",
+              "legendFormat": "perpetual",
+              "refId": "D"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "99th percentile",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "ms",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 0,
+          "fillGradient": 5,
+          "gridPos": {
+            "h": 18,
+            "w": 12,
+            "x": 12,
+            "y": 7
+          },
+          "hiddenSeries": false,
+          "id": 6,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "nullPointMode": "null",
+          "percentage": false,
+          "pluginVersion": "7.1.0",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [
+            {
+              "alias": "ohlcv",
+              "color": "#37872D"
+            },
+            {
+              "alias": "ticker",
+              "color": "#FADE2A"
+            },
+            {
+              "alias": "trade",
+              "color": "#5794F2"
+            },
+            {
+              "alias": "perpetual",
+              "color": "#B877D9"
+            }
+          ],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(rate(global_event_handling_time_milliseconds_sum{dataset=\"ohlcv\",source=\"$source\"}[1m])) / sum(rate(global_event_handling_time_milliseconds_count{dataset=\"ohlcv\",source=\"$source\"}[1m]))",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "ohlcv",
+              "refId": "A"
+            },
+            {
+              "expr": "sum(rate(global_event_handling_time_milliseconds_sum{dataset=\"ticker\",source=\"$source\"}[1m])) / sum(rate(global_event_handling_time_milliseconds_count{dataset=\"ticker\",source=\"$source\"}[1m]))",
+              "interval": "",
+              "legendFormat": "ticker",
+              "refId": "B"
+            },
+            {
+              "expr": "sum(rate(global_event_handling_time_milliseconds_sum{dataset=\"trade\",source=\"$source\"}[1m])) / sum(rate(global_event_handling_time_milliseconds_count{dataset=\"trade\",source=\"$source\"}[1m]))",
+              "interval": "",
+              "legendFormat": "trade",
+              "refId": "C"
+            },
+            {
+              "expr": "sum(rate(global_event_handling_time_milliseconds_sum{dataset=\"perpetual\",source=\"$source\"}[1m])) / sum(rate(global_event_handling_time_milliseconds_count{dataset=\"perpetual\",source=\"$source\"}[1m]))",
+              "interval": "",
+              "legendFormat": "perpetual",
+              "refId": "D"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Average duration",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "ms",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "collapsed": true,
+          "datasource": null,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 25
+          },
+          "id": 15,
+          "panels": [
+            {
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "#EAB839",
+                        "value": 1000
+                      },
+                      {
+                        "color": "red",
+                        "value": 2000
+                      }
+                    ]
+                  },
+                  "unit": "ms"
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 0,
+                "y": 2
+              },
+              "id": 20,
+              "options": {
+                "displayMode": "gradient",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                  "calcs": [
+                    "mean"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showUnfilled": true
+              },
+              "pluginVersion": "7.1.0",
+              "targets": [
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(die_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\"}[1m])) by (le))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "ohlcv",
+                  "refId": "A"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(die_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "ticker",
+                  "refId": "B"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(die_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "trade",
+                  "refId": "C"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(die_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "perpetual",
+                  "refId": "D"
+                }
+              ],
+              "timeFrom": null,
+              "timeShift": null,
+              "title": "99th percentile",
+              "transparent": true,
+              "type": "bargauge"
+            },
+            {
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "#EAB839",
+                        "value": 750
+                      },
+                      {
+                        "color": "red",
+                        "value": 1000
+                      }
+                    ]
+                  },
+                  "unit": "ms"
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 12,
+                "y": 2
+              },
+              "id": 25,
+              "options": {
+                "displayMode": "gradient",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                  "calcs": [
+                    "mean"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showUnfilled": true
+              },
+              "pluginVersion": "7.1.0",
+              "targets": [
+                {
+                  "expr": "sum(rate(die_event_handling_time_milliseconds_sum{dataset=\"ohlcv\",source=\"$source\"}[1m])) / sum(rate(die_event_handling_time_milliseconds_count{dataset=\"ohlcv\",source=\"$source\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "ohlcv",
+                  "refId": "A"
+                },
+                {
+                  "expr": "sum(rate(die_event_handling_time_milliseconds_sum{dataset=\"ticker\",source=\"$source\"}[1m])) / sum(rate(die_event_handling_time_milliseconds_count{dataset=\"ticker\",source=\"$source\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "ticker",
+                  "refId": "B"
+                },
+                {
+                  "expr": "sum(rate(die_event_handling_time_milliseconds_sum{dataset=\"trade\",source=\"$source\"}[1m])) / sum(rate(die_event_handling_time_milliseconds_count{dataset=\"trade\",source=\"$source\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "trade",
+                  "refId": "C"
+                },
+                {
+                  "expr": "sum(rate(die_event_handling_time_milliseconds_sum{dataset=\"perpetual\",source=\"$source\"}[1m])) / sum(rate(die_event_handling_time_milliseconds_count{dataset=\"perpetual\",source=\"$source\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "perpetual",
+                  "refId": "D"
+                }
+              ],
+              "timeFrom": null,
+              "timeShift": null,
+              "title": "Average duration",
+              "transparent": true,
+              "type": "bargauge"
+            },
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "links": []
+                },
+                "overrides": []
+              },
+              "fill": 0,
+              "fillGradient": 5,
+              "gridPos": {
+                "h": 18,
+                "w": 12,
+                "x": 0,
+                "y": 8
+              },
+              "hiddenSeries": false,
+              "id": 28,
+              "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": true,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "total": false,
+                "values": true
+              },
+              "lines": true,
+              "linewidth": 2,
+              "nullPointMode": "null",
+              "percentage": false,
+              "pluginVersion": "7.1.0",
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [
+                {
+                  "alias": "ohlcv",
+                  "color": "#37872D"
+                },
+                {
+                  "alias": "ticker",
+                  "color": "#FADE2A"
+                },
+                {
+                  "alias": "trade",
+                  "color": "#5794F2"
+                },
+                {
+                  "alias": "perpetual",
+                  "color": "#B877D9"
+                }
+              ],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(die_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\"}[1m])) by (le))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "ohlcv",
+                  "refId": "A"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(die_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "ticker",
+                  "refId": "B"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(die_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "trade",
+                  "refId": "C"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(die_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "perpetual",
+                  "refId": "D"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "99th percentile",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "transparent": true,
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "ms",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": false
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            },
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "links": []
+                },
+                "overrides": []
+              },
+              "fill": 0,
+              "fillGradient": 5,
+              "gridPos": {
+                "h": 18,
+                "w": 12,
+                "x": 12,
+                "y": 8
+              },
+              "hiddenSeries": false,
+              "id": 31,
+              "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": true,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "total": false,
+                "values": true
+              },
+              "lines": true,
+              "linewidth": 2,
+              "nullPointMode": "null",
+              "percentage": false,
+              "pluginVersion": "7.1.0",
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [
+                {
+                  "alias": "ohlcv",
+                  "color": "#37872D"
+                },
+                {
+                  "alias": "ticker",
+                  "color": "#FADE2A"
+                },
+                {
+                  "alias": "trade",
+                  "color": "#5794F2"
+                },
+                {
+                  "alias": "perpetual",
+                  "color": "#B877D9"
+                }
+              ],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "sum(rate(die_event_handling_time_milliseconds_sum{dataset=\"ohlcv\",source=\"$source\"}[1m])) / sum(rate(die_event_handling_time_milliseconds_count{dataset=\"ohlcv\",source=\"$source\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "ohlcv",
+                  "refId": "A"
+                },
+                {
+                  "expr": "sum(rate(die_event_handling_time_milliseconds_sum{dataset=\"ticker\",source=\"$source\"}[1m])) / sum(rate(die_event_handling_time_milliseconds_count{dataset=\"ticker\",source=\"$source\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "ticker",
+                  "refId": "B"
+                },
+                {
+                  "expr": "sum(rate(die_event_handling_time_milliseconds_sum{dataset=\"trade\",source=\"$source\"}[1m])) / sum(rate(die_event_handling_time_milliseconds_count{dataset=\"trade\",source=\"$source\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "trade",
+                  "refId": "C"
+                },
+                {
+                  "expr": "sum(rate(die_event_handling_time_milliseconds_sum{dataset=\"perpetual\",source=\"$source\"}[1m])) / sum(rate(die_event_handling_time_milliseconds_count{dataset=\"perpetual\",source=\"$source\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "perpetual",
+                  "refId": "D"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "Average duration",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "transparent": true,
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "ms",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": false
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            }
+          ],
+          "title": "DIE",
+          "type": "row"
+        },
+        {
+          "collapsed": true,
+          "datasource": null,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 26
+          },
+          "id": 2,
+          "panels": [
+            {
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "#EAB839",
+                        "value": 750
+                      },
+                      {
+                        "color": "red",
+                        "value": 1000
+                      }
+                    ]
+                  },
+                  "unit": "ms"
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 0,
+                "y": 3
+              },
+              "id": 9,
+              "options": {
+                "displayMode": "gradient",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                  "calcs": [
+                    "mean"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showUnfilled": true
+              },
+              "pluginVersion": "7.1.0",
+              "targets": [
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(collector_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\"}[1m])) by (le))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "ohlcv",
+                  "refId": "A"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(collector_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "ticker",
+                  "refId": "B"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(collector_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "trade",
+                  "refId": "C"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(collector_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "perpetual",
+                  "refId": "D"
+                }
+              ],
+              "timeFrom": null,
+              "timeShift": null,
+              "title": "99th percentile",
+              "transparent": true,
+              "type": "bargauge"
+            },
+            {
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "#EAB839",
+                        "value": 350
+                      },
+                      {
+                        "color": "red",
+                        "value": 500
+                      }
+                    ]
+                  },
+                  "unit": "ms"
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 12,
+                "y": 3
+              },
+              "id": 19,
+              "options": {
+                "displayMode": "gradient",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                  "calcs": [
+                    "mean"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showUnfilled": true
+              },
+              "pluginVersion": "7.1.0",
+              "targets": [
+                {
+                  "expr": "sum(rate(collector_event_handling_time_milliseconds_sum{dataset=\"ohlcv\"}[1m])) / sum(rate(collector_event_handling_time_milliseconds_count{dataset=\"ohlcv\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "ohlcv",
+                  "refId": "A"
+                },
+                {
+                  "expr": "sum(rate(collector_event_handling_time_milliseconds_sum{dataset=\"ticker\"}[1m])) / sum(rate(collector_event_handling_time_milliseconds_count{dataset=\"ticker\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "ticker",
+                  "refId": "B"
+                },
+                {
+                  "expr": "sum(rate(collector_event_handling_time_milliseconds_sum{dataset=\"trade\"}[1m])) / sum(rate(collector_event_handling_time_milliseconds_count{dataset=\"trade\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "trade",
+                  "refId": "C"
+                },
+                {
+                  "expr": "sum(rate(collector_event_handling_time_milliseconds_sum{dataset=\"perpetual\"}[1m])) / sum(rate(collector_event_handling_time_milliseconds_count{dataset=\"perpetual\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "perpetual",
+                  "refId": "D"
+                }
+              ],
+              "timeFrom": null,
+              "timeShift": null,
+              "title": "Average duration",
+              "transparent": true,
+              "type": "bargauge"
+            },
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "links": []
+                },
+                "overrides": []
+              },
+              "fill": 0,
+              "fillGradient": 5,
+              "gridPos": {
+                "h": 18,
+                "w": 12,
+                "x": 0,
+                "y": 9
+              },
+              "hiddenSeries": false,
+              "id": 4,
+              "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": true,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "total": false,
+                "values": true
+              },
+              "lines": true,
+              "linewidth": 2,
+              "nullPointMode": "null",
+              "percentage": false,
+              "pluginVersion": "7.1.0",
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [
+                {
+                  "alias": "ohlcv",
+                  "color": "#37872D"
+                },
+                {
+                  "alias": "ticker",
+                  "color": "#FADE2A"
+                },
+                {
+                  "alias": "trade",
+                  "color": "#5794F2"
+                },
+                {
+                  "alias": "perpetual",
+                  "color": "#B877D9"
+                }
+              ],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(collector_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\"}[1m])) by (le))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "ohlcv",
+                  "refId": "A"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(collector_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "ticker",
+                  "refId": "B"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(collector_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "trade",
+                  "refId": "C"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(collector_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "perpetual",
+                  "refId": "D"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "99th percentile",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "transparent": true,
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "ms",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": false
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            },
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "links": []
+                },
+                "overrides": []
+              },
+              "fill": 0,
+              "fillGradient": 5,
+              "gridPos": {
+                "h": 18,
+                "w": 12,
+                "x": 12,
+                "y": 9
+              },
+              "hiddenSeries": false,
+              "id": 27,
+              "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": true,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "total": false,
+                "values": true
+              },
+              "lines": true,
+              "linewidth": 2,
+              "nullPointMode": "null",
+              "percentage": false,
+              "pluginVersion": "7.1.0",
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [
+                {
+                  "alias": "ohlcv",
+                  "color": "#37872D"
+                },
+                {
+                  "alias": "ticker",
+                  "color": "#FADE2A"
+                },
+                {
+                  "alias": "trade",
+                  "color": "#5794F2"
+                },
+                {
+                  "alias": "perpetual",
+                  "color": "#B877D9"
+                }
+              ],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "sum(rate(collector_event_handling_time_milliseconds_sum{dataset=\"ohlcv\",source=\"$source\"}[1m])) / sum(rate(collector_event_handling_time_milliseconds_count{dataset=\"ohlcv\",source=\"$source\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "ohlcv",
+                  "refId": "A"
+                },
+                {
+                  "expr": "sum(rate(collector_event_handling_time_milliseconds_sum{dataset=\"ticker\",source=\"$source\"}[1m])) / sum(rate(collector_event_handling_time_milliseconds_count{dataset=\"ticker\",source=\"$source\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "ticker",
+                  "refId": "B"
+                },
+                {
+                  "expr": "sum(rate(collector_event_handling_time_milliseconds_sum{dataset=\"trade\",source=\"$source\"}[1m])) / sum(rate(collector_event_handling_time_milliseconds_count{dataset=\"trade\",source=\"$source\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "trade",
+                  "refId": "C"
+                },
+                {
+                  "expr": "sum(rate(collector_event_handling_time_milliseconds_sum{dataset=\"perpetual\",source=\"$source\"}[1m])) / sum(rate(collector_event_handling_time_milliseconds_count{dataset=\"perpetual\",source=\"$source\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "perpetual",
+                  "refId": "D"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "Average duration",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "transparent": true,
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "ms",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": false
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            }
+          ],
+          "title": "Collectors",
+          "type": "row"
+        },
+        {
+          "collapsed": true,
+          "datasource": null,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 27
+          },
+          "id": 13,
+          "panels": [
+            {
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "#EAB839",
+                        "value": 750
+                      },
+                      {
+                        "color": "red",
+                        "value": 1000
+                      }
+                    ]
+                  },
+                  "unit": "ms"
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 0,
+                "y": 4
+              },
+              "id": 18,
+              "options": {
+                "displayMode": "gradient",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                  "calcs": [
+                    "mean"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showUnfilled": true
+              },
+              "pluginVersion": "7.1.0",
+              "targets": [
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(writer_total_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\"}[1m])) by (le))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "ohlcv",
+                  "refId": "A"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(writer_total_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "ticker",
+                  "refId": "B"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(writer_total_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "trade",
+                  "refId": "C"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(writer_total_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "perpetual",
+                  "refId": "D"
+                }
+              ],
+              "timeFrom": null,
+              "timeShift": null,
+              "title": "99th percentile",
+              "transparent": true,
+              "type": "bargauge"
+            },
+            {
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "#EAB839",
+                        "value": 350
+                      },
+                      {
+                        "color": "red",
+                        "value": 500
+                      }
+                    ]
+                  },
+                  "unit": "ms"
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 12,
+                "y": 4
+              },
+              "id": 21,
+              "options": {
+                "displayMode": "gradient",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                  "calcs": [
+                    "mean"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showUnfilled": true
+              },
+              "pluginVersion": "7.1.0",
+              "targets": [
+                {
+                  "expr": "sum(rate(writer_total_event_handling_time_milliseconds_sum{dataset=\"ohlcv\",source=\"$source\"}[1m])) / sum(rate(writer_total_event_handling_time_milliseconds_count{dataset=\"ohlcv\",source=\"$source\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "ohlcv",
+                  "refId": "A"
+                },
+                {
+                  "expr": "sum(rate(writer_total_event_handling_time_milliseconds_sum{dataset=\"ticker\",source=\"$source\"}[1m])) / sum(rate(writer_total_event_handling_time_milliseconds_count{dataset=\"ticker\",source=\"$source\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "ticker",
+                  "refId": "B"
+                },
+                {
+                  "expr": "sum(rate(writer_total_event_handling_time_milliseconds_sum{dataset=\"trade\",source=\"$source\"}[1m])) / sum(rate(writer_total_event_handling_time_milliseconds_count{dataset=\"trade\",source=\"$source\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "trade",
+                  "refId": "C"
+                },
+                {
+                  "expr": "sum(rate(writer_total_event_handling_time_milliseconds_sum{dataset=\"perpetual\",source=\"$source\"}[1m])) / sum(rate(writer_total_event_handling_time_milliseconds_count{dataset=\"perpetual\",source=\"$source\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "perpetual",
+                  "refId": "D"
+                }
+              ],
+              "timeFrom": null,
+              "timeShift": null,
+              "title": "Average duration",
+              "transparent": true,
+              "type": "bargauge"
+            },
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "links": []
+                },
+                "overrides": []
+              },
+              "fill": 0,
+              "fillGradient": 5,
+              "gridPos": {
+                "h": 18,
+                "w": 12,
+                "x": 0,
+                "y": 10
+              },
+              "hiddenSeries": false,
+              "id": 26,
+              "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": true,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "total": false,
+                "values": true
+              },
+              "lines": true,
+              "linewidth": 2,
+              "nullPointMode": "null",
+              "percentage": false,
+              "pluginVersion": "7.1.0",
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [
+                {
+                  "alias": "ohlcv",
+                  "color": "#37872D"
+                },
+                {
+                  "alias": "ticker",
+                  "color": "#FADE2A"
+                },
+                {
+                  "alias": "trade",
+                  "color": "#5794F2"
+                },
+                {
+                  "alias": "perpetual",
+                  "color": "#B877D9"
+                }
+              ],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(writer_total_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\"}[1m])) by (le))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "ohlcv",
+                  "refId": "A"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(writer_total_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "ticker",
+                  "refId": "B"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(writer_total_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "trade",
+                  "refId": "C"
+                },
+                {
+                  "expr": "histogram_quantile(0.99, sum(rate(writer_total_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\"}[1m])) by (le))",
+                  "interval": "",
+                  "legendFormat": "perpetual",
+                  "refId": "D"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "99th percentile",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "transparent": true,
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "ms",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": false
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            },
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "links": []
+                },
+                "overrides": []
+              },
+              "fill": 0,
+              "fillGradient": 5,
+              "gridPos": {
+                "h": 18,
+                "w": 12,
+                "x": 12,
+                "y": 10
+              },
+              "hiddenSeries": false,
+              "id": 29,
+              "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": true,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "total": false,
+                "values": true
+              },
+              "lines": true,
+              "linewidth": 2,
+              "nullPointMode": "null",
+              "percentage": false,
+              "pluginVersion": "7.1.0",
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [
+                {
+                  "alias": "ohlcv",
+                  "color": "#37872D"
+                },
+                {
+                  "alias": "ticker",
+                  "color": "#FADE2A"
+                },
+                {
+                  "alias": "trade",
+                  "color": "#5794F2"
+                },
+                {
+                  "alias": "perpetual",
+                  "color": "#B877D9"
+                }
+              ],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "sum(rate(writer_total_event_handling_time_milliseconds_sum{dataset=\"ohlcv\",source=\"$source\"}[1m])) / sum(rate(writer_total_event_handling_time_milliseconds_count{dataset=\"ohlcv\",source=\"$source\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "ohlcv",
+                  "refId": "A"
+                },
+                {
+                  "expr": "sum(rate(writer_total_event_handling_time_milliseconds_sum{dataset=\"ticker\",source=\"$source\"}[1m])) / sum(rate(writer_total_event_handling_time_milliseconds_count{dataset=\"ticker\",source=\"$source\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "ticker",
+                  "refId": "B"
+                },
+                {
+                  "expr": "sum(rate(writer_total_event_handling_time_milliseconds_sum{dataset=\"trade\",source=\"$source\"}[1m])) / sum(rate(writer_total_event_handling_time_milliseconds_count{dataset=\"trade\",source=\"$source\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "trade",
+                  "refId": "C"
+                },
+                {
+                  "expr": "sum(rate(writer_total_event_handling_time_milliseconds_sum{dataset=\"perpetual\",source=\"$source\"}[1m])) / sum(rate(writer_total_event_handling_time_milliseconds_count{dataset=\"perpetual\",source=\"$source\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "perpetual",
+                  "refId": "D"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "Average duration",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "transparent": true,
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "ms",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": false
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            }
+          ],
+          "title": "Writers",
+          "type": "row"
+        },
+        {
+          "collapsed": true,
+          "datasource": null,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 28
+          },
+          "id": 39,
+          "panels": [
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "links": []
+                },
+                "overrides": []
+              },
+              "fill": 0,
+              "fillGradient": 5,
+              "gridPos": {
+                "h": 13,
+                "w": 12,
+                "x": 0,
+                "y": 5
+              },
+              "hiddenSeries": false,
+              "id": 41,
+              "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": true,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "total": false,
+                "values": true
+              },
+              "lines": true,
+              "linewidth": 2,
+              "nullPointMode": "null",
+              "percentage": false,
+              "pluginVersion": "7.1.0",
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\",le=\"50\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "< 50 ms",
+                  "refId": "A"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\",le=\"100\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\",le=\"50\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "50 to 100 ms",
+                  "refId": "B"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\",le=\"250\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\",le=\"100\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "100 to 250 ms",
+                  "refId": "C"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\",le=\"500\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\",le=\"250\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "250 to 500 ms",
+                  "refId": "D"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\",le=\"1000\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\",le=\"500\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "500 ms to 1 s",
+                  "refId": "E"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\",le=\"2500\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\",le=\"1000\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "1 s to 2.5 s",
+                  "refId": "F"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\",le=\"+Inf\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\",source=\"$source\",le=\"2500\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "> 2.5 s",
+                  "refId": "G"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "OHLCV",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "transparent": true,
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": false
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            },
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "links": []
+                },
+                "overrides": []
+              },
+              "fill": 0,
+              "fillGradient": 5,
+              "gridPos": {
+                "h": 13,
+                "w": 12,
+                "x": 12,
+                "y": 5
+              },
+              "hiddenSeries": false,
+              "id": 42,
+              "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": true,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "total": false,
+                "values": true
+              },
+              "lines": true,
+              "linewidth": 2,
+              "nullPointMode": "null",
+              "percentage": false,
+              "pluginVersion": "7.1.0",
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\",le=\"50\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "< 50 ms",
+                  "refId": "A"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\",le=\"100\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\",le=\"50\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "50 to 100 ms",
+                  "refId": "B"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\",le=\"250\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\",le=\"100\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "100 to 250 ms",
+                  "refId": "C"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\",le=\"500\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\",le=\"250\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "250 to 500 ms",
+                  "refId": "D"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\",le=\"1000\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\",le=\"500\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "500 ms to 1 s",
+                  "refId": "E"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\",le=\"2500\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\",le=\"1000\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "1 s to 2.5 s",
+                  "refId": "F"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\",le=\"+Inf\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ticker\",source=\"$source\",le=\"2500\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "> 2.5 s",
+                  "refId": "G"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "TICKER",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "transparent": true,
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": false
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            },
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "links": []
+                },
+                "overrides": []
+              },
+              "fill": 0,
+              "fillGradient": 5,
+              "gridPos": {
+                "h": 13,
+                "w": 12,
+                "x": 0,
+                "y": 18
+              },
+              "hiddenSeries": false,
+              "id": 43,
+              "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": true,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "total": false,
+                "values": true
+              },
+              "lines": true,
+              "linewidth": 2,
+              "nullPointMode": "null",
+              "percentage": false,
+              "pluginVersion": "7.1.0",
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\",le=\"50\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "< 50 ms",
+                  "refId": "A"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\",le=\"100\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\",le=\"50\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "50 to 100 ms",
+                  "refId": "B"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\",le=\"250\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\",le=\"100\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "100 to 250 ms",
+                  "refId": "C"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\",le=\"500\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\",le=\"250\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "250 to 500 ms",
+                  "refId": "D"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\",le=\"1000\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\",le=\"500\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "500 ms to 1 s",
+                  "refId": "E"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\",le=\"2500\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\",le=\"1000\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "1 s to 2.5 s",
+                  "refId": "F"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\",le=\"+Inf\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"trade\",source=\"$source\",le=\"2500\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "> 2.5 s",
+                  "refId": "G"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "TRADE",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "transparent": true,
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": false
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            },
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "links": []
+                },
+                "overrides": []
+              },
+              "fill": 0,
+              "fillGradient": 5,
+              "gridPos": {
+                "h": 13,
+                "w": 12,
+                "x": 12,
+                "y": 18
+              },
+              "hiddenSeries": false,
+              "id": 44,
+              "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": true,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "total": false,
+                "values": true
+              },
+              "lines": true,
+              "linewidth": 2,
+              "nullPointMode": "null",
+              "percentage": false,
+              "pluginVersion": "7.1.0",
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\",le=\"50\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "< 50 ms",
+                  "refId": "A"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\",le=\"100\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\",le=\"50\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "50 to 100 ms",
+                  "refId": "B"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\",le=\"250\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\",le=\"100\"}[1m]))",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "100 to 250 ms",
+                  "refId": "C"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\",le=\"500\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\",le=\"250\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "250 to 500 ms",
+                  "refId": "D"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\",le=\"1000\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\",le=\"500\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "500 ms to 1 s",
+                  "refId": "E"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\",le=\"2500\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\",le=\"1000\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "1 s to 2.5 s",
+                  "refId": "F"
+                },
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\",le=\"+Inf\"}[1m])) - sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"perpetual\",source=\"$source\",le=\"2500\"}[1m]))",
+                  "interval": "",
+                  "legendFormat": "> 2.5 s",
+                  "refId": "G"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "PERPETUAL",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "transparent": true,
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": false
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            }
+          ],
+          "title": "Datasets details",
+          "type": "row"
+        },
+        {
+          "collapsed": true,
+          "datasource": null,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 29
+          },
+          "id": 33,
+          "panels": [
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "links": []
+                },
+                "overrides": []
+              },
+              "fill": 0,
+              "fillGradient": 5,
+              "gridPos": {
+                "h": 13,
+                "w": 24,
+                "x": 0,
+                "y": 56
+              },
+              "hiddenSeries": false,
+              "id": 35,
+              "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": true,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "sort": null,
+                "sortDesc": null,
+                "total": false,
+                "values": true
+              },
+              "lines": true,
+              "linewidth": 2,
+              "nullPointMode": "null",
+              "percentage": false,
+              "pluginVersion": "7.1.0",
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ohlcv\", source=\"$source\"}[1m])) by (le)",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "{{ le }}",
+                  "refId": "A"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "OHLCV",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "transformations": [],
+              "transparent": true,
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": false
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            },
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "links": []
+                },
+                "overrides": []
+              },
+              "fill": 0,
+              "fillGradient": 5,
+              "gridPos": {
+                "h": 13,
+                "w": 24,
+                "x": 0,
+                "y": 69
+              },
+              "hiddenSeries": false,
+              "id": 36,
+              "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": true,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "sort": null,
+                "sortDesc": null,
+                "total": false,
+                "values": true
+              },
+              "lines": true,
+              "linewidth": 2,
+              "nullPointMode": "null",
+              "percentage": false,
+              "pluginVersion": "7.1.0",
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"ticker\", source=\"$source\"}[1m])) by (le)",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "{{ le }}",
+                  "refId": "A"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "TICKER",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "transformations": [],
+              "transparent": true,
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": false
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            },
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "links": []
+                },
+                "overrides": []
+              },
+              "fill": 0,
+              "fillGradient": 5,
+              "gridPos": {
+                "h": 13,
+                "w": 24,
+                "x": 0,
+                "y": 82
+              },
+              "hiddenSeries": false,
+              "id": 37,
+              "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": true,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "sort": null,
+                "sortDesc": null,
+                "total": false,
+                "values": true
+              },
+              "lines": true,
+              "linewidth": 2,
+              "nullPointMode": "null",
+              "percentage": false,
+              "pluginVersion": "7.1.0",
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"trade\", source=\"$source\"}[1m])) by (le)",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "{{ le }}",
+                  "refId": "A"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "TRADE",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "transformations": [],
+              "transparent": true,
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": false
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            },
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "prometheus",
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {},
+                  "links": []
+                },
+                "overrides": []
+              },
+              "fill": 0,
+              "fillGradient": 5,
+              "gridPos": {
+                "h": 13,
+                "w": 24,
+                "x": 0,
+                "y": 95
+              },
+              "hiddenSeries": false,
+              "id": 45,
+              "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": true,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "sort": null,
+                "sortDesc": null,
+                "total": false,
+                "values": true
+              },
+              "lines": true,
+              "linewidth": 2,
+              "nullPointMode": "null",
+              "percentage": false,
+              "pluginVersion": "7.1.0",
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "sum(rate(global_event_handling_time_milliseconds_bucket{dataset=\"perpetual\", source=\"$source\"}[1m])) by (le)",
+                  "hide": false,
+                  "interval": "",
+                  "legendFormat": "{{ le }}",
+                  "refId": "A"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "PERPETUAL",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "transformations": [],
+              "transparent": true,
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": false
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            }
+          ],
+          "title": "Datasets complete details",
+          "type": "row"
+        }
+      ],
+      "refresh": "30s",
+      "schemaVersion": 26,
+      "style": "dark",
+      "tags": [
+        "domains",
+        "die",
+        "sbt"
+      ],
+      "templating": {
+        "list": [
+          {
+            "allValue": null,
+            "current": {
+              "selected": false,
+              "text": "binance",
+              "value": "binance"
+            },
+            "datasource": "prometheus",
+            "definition": "label_values(global_event_handling_time_milliseconds_bucket,source)",
+            "hide": 0,
+            "includeAll": false,
+            "label": "Source",
+            "multi": false,
+            "name": "source",
+            "options": [],
+            "query": "label_values(global_event_handling_time_milliseconds_bucket,source)",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 0,
+            "tagValuesQuery": "",
+            "tags": [],
+            "tagsQuery": "",
+            "type": "query",
+            "useTags": false
+          }
+        ]
+      },
+      "time": {
+        "from": "now-1h",
+        "to": "now"
+      },
+      "timepicker": {
+        "refresh_intervals": [
+          "10s",
+          "15s",
+          "30s",
+          "1m",
+          "5m",
+          "15m",
+          "30m",
+          "1h",
+          "2h",
+          "1d"
+        ]
+      },
+      "timezone": "",
+      "title": "DIE - Latency",
+      "uid": "die-latency",
+      "version": 1
+    }

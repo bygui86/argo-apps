@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: prometheus-operator
+spec:
+  selector:
+    matchLabels:
+      app: prometheus-operator
+  endpoints:
+    # - port: http
+    #   honorLabels: true
+    #   interval: 15s
+    #   scrapeTimeout: 14s
+    - port: https
+      scheme: https
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tlsConfig:
+        insecureSkipVerify: true
+      interval: 15s
+      scrapeTimeout: 14s
+      honorLabels: true

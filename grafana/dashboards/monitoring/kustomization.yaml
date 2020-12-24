@@ -1,0 +1,13 @@
+
+resources:
+  - alertmanager-alerting.yaml
+  - alertmanager.yaml
+  - event-exporter.yaml
+  - grafana.yaml
+  # - node-exporter.yaml
+  # - prometheus-remote-write.yaml
+  - prometheus.yaml
+  - version-checker.yaml
+
+commonLabels:
+  grafanaFolder: monitoring

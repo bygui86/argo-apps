@@ -1,0 +1,19 @@
+
+resources:
+  - resources-cluster-details.yaml
+  - resources-cluster-summary.yaml
+  - resources-cluster-use.yaml
+  - resources-namespace-by-pod.yaml
+  - resources-namespace-by-workload.yaml
+  - resources-node-by-pod.yaml
+  - resources-node-use.yaml
+  - resources-node.yaml
+  - resources-persistent-volumes.yaml
+  - resources-pod-details.yaml
+  - resources-pod-summary.yaml
+  - resources-statefulset.yaml
+  - resources-workload.yaml
+
+commonLabels:
+  grafanaFolder: kubernetes
+  k8sArea: resources

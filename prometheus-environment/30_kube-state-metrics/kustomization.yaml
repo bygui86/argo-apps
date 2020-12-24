@@ -1,0 +1,20 @@
+
+namespace: monitoring
+
+resources:
+  - serviceAccount.yaml
+  - clusterRole.yaml
+  - clusterRoleBinding.yaml
+  - role.yaml
+  - roleBinding.yaml
+  - deployment.yaml
+  - service.yaml
+  - serviceMonitor.yaml
+
+commonLabels:
+  app: kube-state-metrics
+  domain: monitoring
+  feature: prometheus
+
+commonAnnotations:
+  version: v1.9.7

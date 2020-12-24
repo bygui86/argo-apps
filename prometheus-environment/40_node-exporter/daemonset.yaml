@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-exporter
+  annotations:
+    kubeRbacProxy: "quay.io/brancz/kube-rbac-proxy:v0.8.0"
+spec:
+  selector:
+    matchLabels:
+      app: node-exporter
+  template:
+    metadata:
+      labels:
+        app: node-exporter
+    spec:
+      serviceAccountName: node-exporter
+      containers:
+        - name: node-exporter
+          # v1.0.1
+          image: quay.io/prometheus/node-exporter@sha256:cf66a6bbd573fd819ea09c72e21b528e9252d58d01ae13564a29749de1e48e0f
+          imagePullPolicy: IfNotPresent
+          args:
+            - --web.listen-address=127.0.0.1:9100
+            - --path.procfs=/host/proc
+            - --path.sysfs=/host/sys
+            - --path.rootfs=/host/root
+            - --no-collector.wifi
+            - --no-collector.hwmon
+            - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)
+          # ports not exposed because proxied by sidecar container
+          # 9100 -> 9100 by kube-rbac-proxy
+          resources:
+            requests:
+              cpu: 100m
+              memory: 180Mi
+            limits:
+              cpu: 250m
+              memory: 180Mi
+          # MISSING
+          # liveness
+          # readiness
+          volumeMounts:
+            - mountPath: /host/proc
+              name: proc
+              readOnly: false
+            - mountPath: /host/sys
+              name: sys
+              readOnly: false
+            - mountPath: /host/root
+              mountPropagation: HostToContainer
+              name: root
+              readOnly: true
+        - name: kube-rbac-proxy
+          # v0.8.0
+          image: quay.io/brancz/kube-rbac-proxy@sha256:f5a13092303d1888a1b05b24a8ec15059561c266dd2b35a0be1e92e4d39ac926
+          imagePullPolicy: IfNotPresent
+          args:
+            - --logtostderr
+            - --secure-listen-address=[$(IP)]:9100
+            - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
+            - --upstream=http://127.0.0.1:9100/
+          env:
+            - name: IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          ports:
+            - name: https
+              containerPort: 9100
+              hostPort: 9100
+          resources:
+            requests:
+              cpu: 10m
+              memory: 20Mi
+            limits:
+              cpu: 20m
+              memory: 60Mi
+          # MISSING
+          # liveness
+          # readiness
+      nodeSelector:
+        kubernetes.io/os: linux
+      tolerations:
+        - operator: Exists
+        # - effect: NoExecute
+        #   operator: Exists
+        # - effect: NoSchedule
+        #   operator: Exists
+        # - effect: NoSchedule
+        #   operator: Exists
+        #   key: node-role.kubernetes.io/master
+      volumes:
+        - hostPath:
+            path: /proc
+          name: proc
+        - hostPath:
+            path: /sys
+          name: sys
+        - hostPath:
+            path: /
+          name: root

@@ -1,0 +1,14 @@
+
+resources:
+  - fluent.yaml
+  - logging-flows.yaml
+  - loki-chunks.yaml
+  - loki-logs.yaml
+  - loki-operational.yaml
+  - loki-quick-search.yaml
+  - loki-reads.yaml
+  - loki-sbt-custom.yaml
+  - loki-writes.yaml
+
+commonLabels:
+  grafanaFolder: logging

@@ -1,0 +1,21 @@
+
+namespace: monitoring
+
+resources:
+  # - podSecurityPolicy.yaml
+  - serviceAccount.yaml
+  - clusterRole.yaml
+  - clusterRoleBinding.yaml
+  - role.yaml
+  - roleBinding.yaml
+  - prometheus.yaml
+  - service.yaml
+  - serviceMonitor.yaml
+
+commonLabels:
+  app: prometheus
+  domain: monitoring
+  feature: prometheus
+
+commonAnnotations:
+  version: v2.23.0
