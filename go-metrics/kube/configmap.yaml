@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: go-metrics
+data:
+  KUBE_HOST: "0.0.0.0"
+  # KUBE_PORT: "9091"
+  # KUBE_SHUTDOWN_TIMEOUT: "15"
+  
+  MONITOR_HOST: "0.0.0.0"
+  # MONITOR_PORT: "9090"
+  # MONITOR_SHUTDOWN_TIMEOUT: "15"
+
+  REST_HOST: "0.0.0.0"
+  # REST_PORT: "8080"
+  # REST_SHUTDOWN_TIMEOUT: "15"

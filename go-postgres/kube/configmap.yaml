@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: go-postgres
+data:
+  DB_HOST: "postgresql.postgres.svc.cluster.local"
+  # DB_PORT: 5432
+  DB_NAME: products
+  # DB_SSL_MODE: disable
+
+  REST_HOST: "0.0.0.0"
+  # REST_PORT: "8080"

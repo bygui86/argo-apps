@@ -1,0 +1,16 @@
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: guestbook
+
+resources:
+  - deployment.yaml
+  - service.yaml
+
+commonLabels:
+  app: guestbook-ui
+  group: guestbook
+
+commonAnnotations:
+  container: "gcr.io/heptio-images/ks-guestbook-demo:0.2"

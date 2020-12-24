@@ -1,0 +1,125 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgresql
+spec:
+  serviceName: postgresql-headless
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql
+  template:
+    metadata:
+      name: postgresql
+      labels:
+        app: postgresql
+    spec:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+      containers:
+        - name: postgresql
+          image: postgres:13.1
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: postgresql
+            - secretRef:
+                name: postgresql
+          ports:
+            - name: postgresql
+              containerPort: 5432
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512M
+            limits:
+              cpu: "1"
+              memory: 512M
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - -e
+                - |
+                  pg_isready -U $POSTGRES_USER -d $POSTGRES_DB -h 127.0.0.1 -p 5432
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - -e
+                - |
+                  pg_isready -U $POSTGRES_USER -d $POSTGRES_DB -h 127.0.0.1 -p 5432
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+        - name: metrics
+          image: wrouesnel/postgres_exporter:v0.8.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DATA_SOURCE_URI
+              value: 127.0.0.1:5432/ast?sslmode=disable
+            - name: DATA_SOURCE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: POSTGRES_USER
+            - name: DATA_SOURCE_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: POSTGRES_PASSWORD
+          ports:
+            - name: metrics
+              containerPort: 9187
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: metrics
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
+          readinessProbe:
+            httpGet:
+              path: /
+              port: metrics
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels:
+          type: ssd
+          expandable: "true"
+      spec:
+        storageClassName: ssd-expandable
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1G

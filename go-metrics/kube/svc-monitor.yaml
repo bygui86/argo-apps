@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: go-metrics
+spec:
+  selector:
+    matchLabels:
+      app: go-metrics
+      group: go-samples
+  namespaceSelector:
+    matchNames:
+      - metrics
+  endpoints:
+    - port: metrics
+      interval: 15s
+      scrapeTimeout: 14s
