@@ -113,11 +113,7 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: data
-        labels:
-          type: ssd
-          expandable: "true"
       spec:
-        storageClassName: ssd-expandable
         accessModes:
           - ReadWriteOnce
         resources:

@@ -15,3 +15,4 @@ commonLabels:
 
 commonAnnotations:
   container: "bygui86/go-postgres:latest"
+  argocd.argoproj.io/sync-wave: "2"
