@@ -9,7 +9,7 @@ spec:
 
   source:
     repoURL: https://github.com/bygui86/argo-apps
-    targetRevision: master
+    targetRevision: main
     path: apps
 
   destination:

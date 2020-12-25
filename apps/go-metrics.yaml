@@ -2,13 +2,15 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: go-metrics
+  # annotations:
+  #   argocd.argoproj.io/sync-wave: "1"
 spec:
 
   project: default
 
   source:
     repoURL: https://github.com/bygui86/argo-apps
-    targetRevision: master
+    targetRevision: main
     path: go-metrics/kube
 
   destination:

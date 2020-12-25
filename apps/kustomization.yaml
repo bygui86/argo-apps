@@ -7,3 +7,5 @@ namespace: argocd
 resources:
   - guestbook.yaml
   - go-metrics.yaml
+  - postgresql.yaml
+  - go-postgres.yaml
