@@ -9,3 +9,4 @@ resources:
   - go-metrics.yaml
   - postgresql.yaml
   - go-postgres.yaml
+  - prometheus.yaml

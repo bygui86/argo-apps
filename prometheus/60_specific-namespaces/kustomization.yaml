@@ -1,0 +1,15 @@
+
+resources:
+  - roleBindings/
+  - roles/
+
+commonLabels:
+  app: prometheus
+  domain: monitoring
+  feature: prometheus
+
+commonAnnotations:
+  version: v2.23.0
+  # argocd.argoproj.io/hook: Sync
+  # argocd.argoproj.io/hook: PreSync
+  argocd.argoproj.io/sync-wave: "3"

@@ -1,0 +1,11 @@
+
+namespace: monitoring
+
+resources:
+  - 10_crds/
+  - 20_operator/
+  # - 30_kube-state-metrics/
+  # - 40_node-exporter/
+  # - 50_prometheus-adapter/
+  - 60_specific-namespaces/
+  - 70_prometheus/
