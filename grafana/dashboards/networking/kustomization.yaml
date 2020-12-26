@@ -1,7 +1,0 @@
-
-resources:
-  - calico.yaml
-  - traefik.yaml
-
-commonLabels:
-  grafanaFolder: networking

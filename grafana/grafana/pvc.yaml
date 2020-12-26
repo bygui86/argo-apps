@@ -9,16 +9,13 @@ metadata:
     group: dashboards
     feature: grafana
     component: grafana
-    type: standard
-    expandable: "true"
   annotations:
     version: "7.3.4"
   finalizers:
     - kubernetes.io/pvc-protection
 spec:
-  storageClassName: standard-expandable
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 3Gi
+      storage: 500M

@@ -1,6 +1,0 @@
-
-resources:
-  - cert-manager.yaml
-
-commonLabels:
-  grafanaFolder: security
