@@ -11,11 +11,11 @@ import (
 )
 
 func main() {
-	logging.Log.Info("Start go-traces")
+	logging.Log.Info("Start go-postgres")
 
 	restServer := startRestServer()
 
-	logging.Log.Info("go-traces up&running")
+	logging.Log.Info("go-postgres up and running")
 
 	startSysCallChannel()
 

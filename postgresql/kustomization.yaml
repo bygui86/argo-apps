@@ -17,4 +17,3 @@ commonLabels:
 commonAnnotations:
   version: "13.1"
   exporterVersion: "v0.8.0"
-  argocd.argoproj.io/sync-wave: "1"

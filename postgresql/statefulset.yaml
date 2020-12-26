@@ -71,7 +71,7 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: DATA_SOURCE_URI
-              value: 127.0.0.1:5432/ast?sslmode=disable
+              value: 127.0.0.1:5432/products?sslmode=disable
             - name: DATA_SOURCE_USER
               valueFrom:
                 secretKeyRef:
