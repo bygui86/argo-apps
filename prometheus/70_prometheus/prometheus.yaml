@@ -1,7 +1,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
 metadata:
-  name: prod
+  name: test
 spec:
   image: quay.io/prometheus/prometheus:v2.23.0
   replicas: 1
@@ -11,18 +11,18 @@ spec:
   
   resources:
     requests:
-      cpu: "3"
-      memory: 6G
+      cpu: "1"
+      memory: 1G
     limits:
-      cpu: "4"
-      memory: 8G
+      cpu: "2"
+      memory: 2G
   
   # How long to retain samples in storage.
   # Overrides "storage.tsdb.retention" if this flag is set to anything other than default.
-  retention: 60d
+  retention: 1d
   # [EXPERIMENTAL] Maximum number of bytes that can be stored for blocks. 
   # Units supported: KB, MB, GB, TB, PB. This flag is experimental and can be changed in future releases.
-  retentionSize: 500GB
+  retentionSize: 750MB
 
   serviceAccountName: prometheus
 
@@ -77,15 +77,12 @@ spec:
           # WARN: not added by the operator in version 0.3x.x
           domain: monitoring
           feature: prometheus
-          type: ssd
-          expandable: "true"
       spec:
-        storageClassName: ssd-expandable
         accessModes:
           - ReadWriteOnce
         resources:
           requests:
-            storage: 750Gi
+            storage: 1G
 
   affinity:
     podAntiAffinity:
