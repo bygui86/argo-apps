@@ -87,8 +87,6 @@ spec:
           requests:
             storage: 750Gi
 
-  nodeSelector:
-    kubernetes.io/os: linux
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:

@@ -80,5 +80,3 @@ spec:
           # MISSING
           # liveness
           # readiness
-  nodeSelector:
-    kubernetes.io/os: linux

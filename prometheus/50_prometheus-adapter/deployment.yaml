@@ -59,5 +59,3 @@ spec:
         - configMap:
             name: prometheus-adapter
           name: config
-  nodeSelector:
-    kubernetes.io/os: linux
