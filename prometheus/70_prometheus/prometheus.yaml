@@ -3,11 +3,7 @@ kind: Prometheus
 metadata:
   name: prod
 spec:
-  # DEPRECATED
-  # baseImage: quay.io/prometheus/prometheus
-  # sha: 0eac377a90d361be9da35b469def699bcd5bb26eab8a6e9068516a9910717d58 # WARN: do not specify sha256, it's already provided by prometheus-operator
-  # v2.23.0
-  image: quay.io/prometheus/prometheus@sha256:0eac377a90d361be9da35b469def699bcd5bb26eab8a6e9068516a9910717d58
+  image: quay.io/prometheus/prometheus:v2.23.0
   replicas: 1
 
   logFormat: json
@@ -93,20 +89,7 @@ spec:
 
   nodeSelector:
     kubernetes.io/os: linux
-  tolerations:
-    - key: dedicated
-      operator: Equal
-      value: monitoring
-      effect: NoSchedule
   affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: dedicated
-                operator: In
-                values:
-                  - monitoring
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
         - podAffinityTerm:

@@ -16,8 +16,7 @@ spec:
       serviceAccountName: node-exporter
       containers:
         - name: node-exporter
-          # v1.0.1
-          image: quay.io/prometheus/node-exporter@sha256:cf66a6bbd573fd819ea09c72e21b528e9252d58d01ae13564a29749de1e48e0f
+          image: quay.io/prometheus/node-exporter:v1.0.1
           imagePullPolicy: IfNotPresent
           args:
             - --web.listen-address=127.0.0.1:9100
@@ -51,8 +50,7 @@ spec:
               name: root
               readOnly: true
         - name: kube-rbac-proxy
-          # v0.8.0
-          image: quay.io/brancz/kube-rbac-proxy@sha256:f5a13092303d1888a1b05b24a8ec15059561c266dd2b35a0be1e92e4d39ac926
+          image: quay.io/brancz/kube-rbac-proxy:v0.8.0
           imagePullPolicy: IfNotPresent
           args:
             - --logtostderr

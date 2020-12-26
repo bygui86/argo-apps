@@ -19,8 +19,7 @@ spec:
       serviceAccountName: prometheus-adapter
       containers:
         - name: prometheus-adapter
-          # v0.8.2
-          image: directxman12/k8s-prometheus-adapter@sha256:2b09a571757a12c0245f2f1a74db4d1b9386ff901cf57f5ce48a0a682bd0e3af
+          image: directxman12/k8s-prometheus-adapter:v0.8.2
           imagePullPolicy: IfNotPresent
           args:
             - --cert-dir=/var/run/serving-cert
@@ -60,20 +59,5 @@ spec:
         - configMap:
             name: prometheus-adapter
           name: config
-
-      nodeSelector:
-        kubernetes.io/os: linux
-      tolerations:
-        - key: dedicated
-          operator: Equal
-          value: monitoring
-          effect: NoSchedule
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: dedicated
-                    operator: In
-                    values:
-                      - monitoring
+  nodeSelector:
+    kubernetes.io/os: linux
