@@ -8,12 +8,15 @@ Applications to test Argo
 - [x] simple app with kustomize
 - [x] custom app in golang
 - [x] database
+- [x] operator (e.g. prometheus)
 - [x] app-of-apps
 - [ ] hook
-- [ ] sync wave - `WIP`
-- [ ] operator (prometheus) - `WIP`
+  - [ ] pre
+  - [ ] post
+- [x] sync wave
 - [ ] namespaces first
-- [ ] expose argo metrics
+- [ ] expose argo metrics - `WIP`
+- [ ] notifications
 - [ ] private repo
 
 ## Integrations
