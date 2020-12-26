@@ -1,6 +1,4 @@
 
-namespace: monitoring
-
 resources:
   - 10_crds/
   - 20_operator/

@@ -1,7 +1,6 @@
 
 resources:
   - argocd.yaml
-  - cert-manager.yaml
   - default.yaml
   - kube-system.yaml
   - metrics.yaml
