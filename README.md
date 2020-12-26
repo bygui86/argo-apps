@@ -5,13 +5,13 @@ Applications to test Argo
 
 ## TODOs
 
-- [ ] simple app with kustomize
-- [ ] app-of-apps
+- [x] simple app with kustomize
+- [x] custom app in golang
+- [x] database
+- [x] app-of-apps
 - [ ] hook
-- [ ] sync wave
-- [ ] custom app in golang
-- [ ] database
-- [ ] operator (prometheus)
+- [ ] sync wave - `WIP`
+- [ ] operator (prometheus) - `WIP`
 - [ ] namespaces first
 - [ ] expose argo metrics
 - [ ] private repo
