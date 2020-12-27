@@ -10,3 +10,4 @@ resources:
   # - postgresql.yaml
   # - go-postgres.yaml
   - prometheus.yaml
+  - argocd-metrics.yaml
