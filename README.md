@@ -9,18 +9,20 @@ Applications to test Argo project.
 - [x] custom app in golang
 - [x] database
 - [x] operator (e.g. prometheus)
+- [x] namespaces first
 - [x] [app-of-apps](https://argoproj.github.io/argo-cd/operator-manual/cluster-bootstrapping/)
 - [ ] [hooks](https://argoproj.github.io/argo-cd/user-guide/resource_hooks/)
   - [ ] pre
   - [ ] post
 - [x] [sync wave](https://argoproj.github.io/argo-cd/user-guide/sync-waves/)
-- [ ] namespaces first
 - [ ] [metrics](https://argoproj.github.io/argo-cd/operator-manual/metrics/) - `WIP`
+- [x] [private repo](https://argoproj.github.io/argo-cd/user-guide/private-repositories/)
 - [ ] [notifications](https://argoproj.github.io/argo-cd/operator-manual/notifications/)
   - [ ] [argocd notifications](https://github.com/argoproj-labs/argocd-notifications)
   - [ ] [argo kube notifier](https://github.com/argoproj-labs/argo-kube-notifier)
   - [ ] [kube watch](https://github.com/bitnami-labs/kubewatch)
-- [ ] [private repo](https://argoproj.github.io/argo-cd/user-guide/private-repositories/)
+- [ ] [declarative setup](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/)
+  - [ ] [repository credentials](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#repository-credentials)
 
 ## Integrations
 
