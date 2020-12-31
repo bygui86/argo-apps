@@ -76,8 +76,8 @@ spec:
           volumeMounts:
 
             # storage
-            - mountPath: /var/lib/grafana
-              name: data-grafana
+            # - mountPath: /var/lib/grafana
+            #   name: data-grafana
             - mountPath: /tmp
               name: tmp-grafana
 
@@ -206,9 +206,9 @@ spec:
 
       volumes:
         # storage
-        - persistentVolumeClaim:
-            claimName: data-grafana
-          name: data-grafana
+        # - persistentVolumeClaim:
+        #     claimName: data-grafana
+        #   name: data-grafana
         - emptyDir: {}
           name: tmp-grafana
 
