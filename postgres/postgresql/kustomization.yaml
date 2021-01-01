@@ -2,16 +2,18 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: postgres
-
 resources:
+  - secret.yaml
   - configmap.yaml
-  - deployment.yaml
+  - statefulset.yaml
   - service.yaml
+  - svc-monitor.yaml
 
 commonLabels:
-  app: go-postgres
+  app: postgresql
   group: postgres
 
 commonAnnotations:
-  container: "bygui86/go-postgres:latest"
+  version: "13.1"
+  exporterVersion: "v0.8.0"
+  argocd.argoproj.io/sync-wave: "1"
