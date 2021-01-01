@@ -5,11 +5,10 @@ kind: Kustomization
 namespace: argocd
 
 resources:
-  # - guestbook.yaml
-  - guestbook-private.yaml
-  # - go-metrics.yaml
-  # - postgresql.yaml
-  # - go-postgres.yaml
-  - prometheus.yaml
-  - grafana.yaml
   - argocd-metrics.yaml
+  - go-metrics.yaml
+  - grafana.yaml
+  - guestbook.yaml
+  - guestbook-private.yaml
+  - postgres.yaml
+  - prometheus.yaml
