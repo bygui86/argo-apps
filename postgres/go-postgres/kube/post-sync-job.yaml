@@ -2,7 +2,6 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: kubectl-after
-  namespace: default
   annotations:
     argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
@@ -15,7 +14,8 @@ spec:
         - name: kubectl
           image: bitnami/kubectl:latest
           args:
-            - "get pods -A"
+            - "get"
+            - "pods"
           resources:
             requests:
               cpu: 200m
