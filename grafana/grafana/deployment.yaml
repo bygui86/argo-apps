@@ -200,9 +200,12 @@ spec:
               subPath: global-status.json
               name: grafana-dashboard-global-status
             ## ci-cd
-            - mountPath: /etc/dashboards/cicd/argocd.json
-              subPath: argocd.json
-              name: grafana-dashboard-argocd
+            - mountPath: /etc/dashboards/cicd/argo-cd.json
+              subPath: argo-cd.json
+              name: grafana-dashboard-argo-cd
+            - mountPath: /etc/dashboards/cicd/argo-cd-notifications.json
+              subPath: argo-cd-notifications.json
+              name: grafana-dashboard-argo-cd-notifications
 
       volumes:
         # storage
@@ -334,5 +337,8 @@ spec:
           name: grafana-dashboard-global-status
         ## ci-cd
         - configMap:
-            name: grafana-dashboard-argocd
-          name: grafana-dashboard-argocd
+            name: grafana-dashboard-argo-cd
+          name: grafana-dashboard-argo-cd
+        - configMap:
+            name: grafana-dashboard-argo-cd-notifications
+          name: grafana-dashboard-argo-cd-notifications

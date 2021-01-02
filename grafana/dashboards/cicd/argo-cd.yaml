@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd
+  name: argo-cd
 data:
-  argocd.json: |-
+  argo-cd.json: |-
     {
       "annotations": {
         "list": [
@@ -3995,7 +3995,7 @@ data:
         ]
       },
       "timezone": "",
-      "title": "ArgoCD",
-      "uid": "argocd",
+      "title": "Argo CD",
+      "uid": "argo-cd",
       "version": 1
     }
