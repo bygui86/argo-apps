@@ -2,7 +2,12 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: app-of-apps
+
   namespace: argocd
+
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: dev-tests
+
 spec:
 
   project: default

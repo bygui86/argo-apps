@@ -12,3 +12,6 @@ resources:
   - guestbook-private.yaml
   - postgres.yaml
   - prometheus.yaml
+
+commonAnnotations:
+  notifications.argoproj.io/subscribe.on-sync-succeeded.slack: dev-tests
