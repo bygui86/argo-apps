@@ -7,3 +7,4 @@ namespace: argocd
 resources:
   - configmap.yaml
   - secret.yaml
+  - svc-monitor.yaml
