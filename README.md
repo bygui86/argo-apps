@@ -17,11 +17,9 @@ Applications to test Argo project.
 - [x] [sync wave](https://argoproj.github.io/argo-cd/user-guide/sync-waves/)
 - [x] [metrics](https://argoproj.github.io/argo-cd/operator-manual/metrics/)
 - [x] [private repo](https://argoproj.github.io/argo-cd/user-guide/private-repositories/)
-- [ ] [notifications](https://argoproj.github.io/argo-cd/operator-manual/notifications/)
-  - [ ] [argocd notifications](https://github.com/argoproj-labs/argocd-notifications)
-  - [ ] [argo kube notifier](https://github.com/argoproj-labs/argo-kube-notifier)
-  - [ ] [kube watch](https://github.com/bitnami-labs/kubewatch)
-- [ ] [declarative setup](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/)
+- [x] [notifications](https://argoproj.github.io/argo-cd/operator-manual/notifications/)
+  - [x] [argo cd notifications](https://github.com/argoproj-labs/argocd-notifications)
+- [ ] [declarative setup](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/) - `WIP`
   - [ ] [repository credentials](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#repository-credentials)
 
 ## Integrations
