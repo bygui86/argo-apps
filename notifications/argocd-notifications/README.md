@@ -11,20 +11,38 @@ Argo CD Notifications includes the catalog of useful triggers and templates. So 
 
 ## Prerequisites
 
-- Kustomize installed locally
 - Argo CD already deployed
+- Kustomize installed locally
 
 ## Instructions
 
 1. Configure Slack following instructions [here](https://argoproj-labs.github.io/argocd-notifications/services/slack/)
 
-1. Install Triggers and Templates from the catalog
+1. Deploy Argo CD Notifications
 
   ```bash
-  kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-notifications/release-v1.0/catalog/install.yaml
+  kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-notifications/release-1.0/manifests/install.yaml
   ```
 
-1. Put token in secret
+  `(i) INFO` This command will deploy also an **empty ConfigMap** and an **empty Secret**.
+
+1. Download Triggers and Templates ConfigMap from the catalog
+
+  ```bash
+  curl -s https://raw.githubusercontent.com/argoproj-labs/argocd-notifications/release-1.0/catalog/install.yaml -o configmap.yaml
+  ```
+
+1. Edit ConfigMap to add Slack:
+
+  ```yaml
+  # ...
+  data:
+    service.slack: |
+      token: $slack-token
+    # ...
+  ```
+
+2. Put token in secret
 
   ```bash
   export SLACK_TOKEN=<SLACK_TOKEN>
@@ -40,7 +58,7 @@ Argo CD Notifications includes the catalog of useful triggers and templates. So 
 1. Subscribe to notifications by `adding the notifications.argoproj.io/subscribe.on-sync-succeeded.slack` annotation to the Argo CD application or project:
 
   ```bash
-  kubectl patch app <my-app> -n argocd -p '{"metadata": {"annotations": {"notifications.argoproj.io/subscribe.on-sync-succeeded.slack":"<SLACK_CHANNEL>"}}}' --type merge
+  kubectl patch app app-of-apps -n argocd -p '{"metadata": {"annotations": {"notifications.argoproj.io/subscribe.on-sync-succeeded.slack":"<SLACK_CHANNEL>"}}}' --type merge
   ```
 
 1. Try syncing an application and get the notification once sync is completed.
