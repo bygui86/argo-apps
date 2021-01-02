@@ -5,11 +5,11 @@ kind: Kustomization
 namespace: argocd
 
 resources:
-  - argocd-metrics.yaml
-  - argocd-repo-server-metrics.yaml
-  - argocd-server-metrics.yaml
+  - argo-cd-metrics.yaml
+  - argo-cd-repo-server-metrics.yaml
+  - argo-cd-server-metrics.yaml
 
 commonLabels:
-  app: argocd
+  app: argo-cd
   domain: cicd
   feature: monitoring

@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: argocd
 
 resources:
-  - argocd-metrics.yaml
+  - argo-cd-metrics.yaml
   - go-metrics.yaml
   - grafana.yaml
   - guestbook.yaml

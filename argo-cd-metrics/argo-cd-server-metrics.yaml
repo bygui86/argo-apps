@@ -1,10 +1,12 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: argocd-repo-server-metrics
+  name: argo-cd-server-metrics
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: argocd-repo-server
+      app.kubernetes.io/name: argocd-server-metrics
   endpoints:
     - port: metrics
+      interval: 30s
+      scrapeTimeout: 29s

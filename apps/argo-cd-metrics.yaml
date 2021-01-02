@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://github.com/bygui86/argo-apps
     targetRevision: main
-    path: argocd-metrics
+    path: argo-cd-metrics
 
   destination:
     server: https://kubernetes.default.svc
