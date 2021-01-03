@@ -67,6 +67,8 @@ Argo CD Notifications includes the catalog of useful triggers and templates. So 
 
 `/!\ WARN` If you add the proper annotation to an `app-of-apps`, you won't receive notifications about single sub-applications. If you want to receive notifications also on sub-applications, you have to add the same annotation on those as well.
 
+---
+
 ## Links
 
 - https://argoproj-labs.github.io/argocd-notifications/

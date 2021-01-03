@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argo-metrics
+  name: go-metrics
 spec:
 
   project: default
@@ -9,11 +9,11 @@ spec:
   source:
     repoURL: https://github.com/bygui86/argo-apps
     targetRevision: main
-    path: argo-cd-metrics
+    path: applications/go-metrics/kube
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: metrics
 
   syncPolicy:
     # MANUAL

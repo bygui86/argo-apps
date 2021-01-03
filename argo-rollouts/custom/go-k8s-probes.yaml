@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: postgres
+  name: go-k8s-probes
 spec:
 
   project: default
 
   source:
-    repoURL: https://github.com/bygui86/argo-apps
+    repoURL: https://github.com/bygui86/go-k8s-probes
     targetRevision: main
-    path: postgres
+    path: go-k8s-probes/kube
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: postgres
+    namespace: rollout
 
   syncPolicy:
     # MANUAL

@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: go-metrics
+  name: prometheus
 spec:
 
   project: default
@@ -9,11 +9,11 @@ spec:
   source:
     repoURL: https://github.com/bygui86/argo-apps
     targetRevision: main
-    path: go-metrics/kube
+    path: applications/prometheus
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: metrics
+    namespace: monitoring
 
   syncPolicy:
     # MANUAL
@@ -28,7 +28,7 @@ spec:
       # - Validate=false # disables resource validation (equivalent to 'kubectl apply --validate=false') ( true by default ).
     # The retry feature is available since v1.7
     retry:
-      limit: 10 # number of failed sync attempt retries; unlimited number of attempts if less than 0
+      limit: 5 # number of failed sync attempt retries; unlimited number of attempts if less than 0
       backoff:
         duration: 5s # the amount to back off. Default unit is seconds, but could also be a duration (e.g. "2m", "1h")
         factor: 2 # a factor to multiply the base duration after each failed retry
