@@ -13,7 +13,7 @@ export GO111MODULE=on
 build :		## Build application
 	go build
 
-test : run-postgres		## Run tests (required a running PostgreSQL instance)
+test :		## Run tests (required a running PostgreSQL instance)
 	go test ./...
 
 run :		## Run application from source code

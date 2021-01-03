@@ -18,7 +18,7 @@ Applications to test Argo project.
 - [x] [metrics](https://argoproj.github.io/argo-cd/operator-manual/metrics/)
 - [x] [private repo](https://argoproj.github.io/argo-cd/user-guide/private-repositories/)
 - [x] [notifications](https://argoproj.github.io/argo-cd/operator-manual/notifications/)
-  - [x] [argo cd notifications](https://github.com/argoproj-labs/argocd-notifications)
+  - [x] [argo cd notifications](https://argoproj-labs.github.io/argocd-notifications/)
 - [ ] [declarative setup](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/) - `WIP`
   - [ ] [repository credentials](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#repository-credentials)
 
