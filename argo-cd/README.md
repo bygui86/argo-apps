@@ -26,10 +26,17 @@ See [here](https://argoproj.github.io/argo-cd/getting_started/#2-download-argo-c
 
 ## Deploy Argo CD
 
-```bash
-kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-```
+1. Create `argocd` namespace
+
+    ```bash
+    kubectl create namespace argocd
+    ```
+
+1. Deploy Argo CD
+
+    ```bash
+    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+    ```
 
 ## Configure private repo
 
@@ -43,9 +50,9 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 
 1. Using Argo CD CLI, execute following command
 
-  ```bash
-  argocd repo add https://github.com/bygui86/argo-private-app.git --username bygui86 --password <GITHUB_ACCESS_TOKEN>
-  ```
+    ```bash
+    argocd repo add https://github.com/bygui86/argo-private-app.git --username bygui86 --password <GITHUB_ACCESS_TOKEN>
+    ```
 
 1. Using Argo UI
 
@@ -62,11 +69,19 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 
         `(i) INFO` For some services, you might have to specify `.git` at the end of repository URL.
 
-## Deploy apps
+## Bootstrap
 
-```bash
-kubectl apply -f argo-cd/app-of-apps.yaml
-```
+1. Open Argo CD UI to observe progress
+
+    ```bash
+    kubectl port-forward svc/argocd-server -n argocd 8080:443
+    ```
+
+1. Deploy Application `app-of-apps`
+
+    ```bash
+    kubectl apply -f argo-cd/app-of-apps.yaml
+    ```
 
 ---
 
