@@ -8,9 +8,9 @@
   - [x] [blue/green](https://argoproj.github.io/argo-rollouts/features/bluegreen/)
 - [x] [Argo CD integration](https://www.youtube.com/watch?v=35Qimb_AZ8U)
   - [x] [blue/green using Argo CD](https://github.com/bygui86/argocd-example-apps/tree/master/blue-green)
-- [ ] [Metrics](https://argoproj.github.io/argo-rollouts/features/controller-metrics/)
-- [ ] [Analysis based on metrics](https://argoproj.github.io/argo-rollouts/features/analysis/#background-analysis)
-- [ ] [Kustomize integration](https://argoproj.github.io/argo-rollouts/features/kustomize/)
+- [x] [Expose metrics](https://argoproj.github.io/argo-rollouts/features/controller-metrics/)
+- [x] [Custom metrics example](https://argoproj.github.io/argo-rollouts/features/analysis/)
+- [x] [Experiment](https://argoproj.github.io/argo-rollouts/features/experiment/)
 
 ## Install Argo Rollouts kubectl plugin
 
@@ -40,4 +40,14 @@ See [here](https://argoproj.github.io/argo-rollouts/installation/#kubectl-plugin
 
 ### [Canary Rollouts](canary.md)
 
-### [Blue/Green Rollouts](blue-green.md)
+### [Blue/Green Rollouts (including Argo CD integration)](blue-green.md)
+
+### [Expose metrics](expose-metrics.md)
+
+### [Experiment](experiment.md)
+
+---
+
+## Links
+
+- [argo-rollouts-examples](https://github.com/bygui86/rollouts-demo)

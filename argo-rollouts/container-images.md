@@ -5,20 +5,20 @@
 
 Available tags:
 
-  - purple
+  - `purple`
   
-  - blue
+  - `blue`
   
-  - green
+  - `green`
   
-  - yellow
+  - `yellow`
   
-  - orange
+  - `orange`
   
-  - red
+  - `red`
 
 In order to extend testing possibilities, each previous tag is available also with prefixes:
 
-  - slow-*
+  - `slow-*` for `high latency` image
 
-  - bad-*
+  - `bad-*` for `high error rate` image

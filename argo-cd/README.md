@@ -17,8 +17,6 @@
 - [x] [private repo](https://argoproj.github.io/argo-cd/user-guide/private-repositories/)
 - [x] [notifications](https://argoproj.github.io/argo-cd/operator-manual/notifications/)
   - [x] [argo cd notifications](https://argoproj-labs.github.io/argocd-notifications/)
-- [ ] [declarative setup](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/)
-  - [ ] [repository credentials](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#repository-credentials)
 
 ## Install Argo CD CLI
 
@@ -71,7 +69,7 @@ See [here](https://argoproj.github.io/argo-cd/getting_started/#2-download-argo-c
 
 ## Bootstrap
 
-1. Open Argo CD UI to observe progress
+1. Open Argo CD UI to watch progress
 
     ```bash
     kubectl port-forward svc/argocd-server -n argocd 8080:443
@@ -87,7 +85,4 @@ See [here](https://argoproj.github.io/argo-cd/getting_started/#2-download-argo-c
 
 ## Links
 
-- [argocd-example-apps](https://github.com/bygui86/argocd-example-apps)
-  - [kustomize app](https://github.com/bygui86/argocd-example-apps/tree/master/kustomize-guestbook)
-  - [sync waves](https://github.com/bygui86/argocd-example-apps/tree/master/sync-waves)
-  - [hooks](https://github.com/bygui86/argocd-example-apps/tree/master/pre-post-sync)
+- [argocd-example-examples](https://github.com/bygui86/argocd-example-apps)

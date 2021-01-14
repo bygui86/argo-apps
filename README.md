@@ -3,10 +3,13 @@
 
 Applications to test Argo project.
 
+`(i) INFO` This repository refers also to another one: [argo-private-app](https://github.com/bygui86/argo-private-app)
+
 ### Features overview
 
-- [ ] argo cd
-- [ ] argo rollouts
+- [x] argo cd
+- [x] argo cd notifications
+- [x] argo rollouts
 - [ ] argo multi-cluster
 - [ ] argo + tekton
 
@@ -21,6 +24,14 @@ See [this README](argo-cd-notifications/README.md)
 ## Argo Rollouts
 
 See [this README](argo-rollouts/README.md)
+
+## Argo multi-cluster
+
+`TODO`
+
+## Argo + Tekton
+
+`TODO`
 
 ---
 

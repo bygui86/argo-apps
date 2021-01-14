@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: guestbook
+spec:
+  strategy:
+    canary:
+      stableMetadata:
+        labels:
+          role: stable
+      canaryMetadata:
+        labels:
+          role: canary
+      analysis:
+        startingStep: 2 # delay starting analysis run until setWeight: 40%
+        templates:
+          - templateName: success-rate
+        args:
+          - name: service-name
+            value: guestbook-svc.default.svc.cluster.local
+      steps:
+        - setWeight: 20
+        - pause: {duration: 3m}
+        - setWeight: 40
+        - pause: {duration: 3m}
+        - setWeight: 60
+        - pause: {duration: 3m}
+        - setWeight: 80
+        - pause: {duration: 3m}
+
+  replicas: 5
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: rollout-canary
+  template:
+    metadata:
+      labels:
+        app: rollout-canary
+    spec:
+      containers:
+        - name: rollouts-demo
+          image: argoproj/rollouts-demo:blue
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 5m
+              memory: 32Mi

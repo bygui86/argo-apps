@@ -47,14 +47,7 @@ spec:
       # If omitted, all ReplicaSets will be retained for the specified scaleDownDelay
       # scaleDownDelayRevisionLimit: 1
 
-      # antiAffinity:
-      #     # EITHER
-      #     requiredDuringSchedulingIgnoredDuringExecution: {}
-      #     # OR
-      #     preferredDuringSchedulingIgnoredDuringExecution:
-      #       weight: 100
-
-  replicas: 2
+  replicas: 3
   revisionHistoryLimit: 2
   selector:
     matchLabels:

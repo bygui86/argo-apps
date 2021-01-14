@@ -6,63 +6,66 @@
 1. Deploy `green` Rollout using Argo CD Application
 
     ```bash
-    kubectl apply -f argo-rollouts/blue-green/service.yaml
-    kubectl apply -f argo-rollouts/blue-green/rollout-green.yaml
+    kustomize build blue-green/ | kubectl apply -f -
     ```
 
     At the beginning, both services `rollout-bluegreen-active` and `rollout-bluegreen-preview` have the same endpoints, pointing to `argoproj/rollouts-demo:green` pods
 
-1. Observe rollout in a separate terminal window
+1. Watch rollout in a separate terminal window
 
     ```bash
-    kubectl argo rollouts get rollout rollout-bluegreen -n default --watch
+    kubectl argo rollouts get rollout rollout-bluegreen --watch
     ```
 
 1. Wait for all pods to be up and running
 
 1. Try access the `active (green)` application
 
-    In a terminal window run
+    - Using `kubectl port-forward` (not always working)
+        ```bash
+        kubectl port-forward svc/rollout-bluegreen-active 8080
+        ```
+        Open the browser and go to http://localhost:8080
 
-    ```bash
-    kubectl port-forward svc/rollout-bluegreen-active 8080 -n default
-    ```
-
-    In another terminal window run (or directly open the browser)
-  
-    ```bash
-    open http://localhost:8080
-    ```
+    - Using `minikube service`
+        ```bash
+        minikube service --url rollout-bluegreen-active
+        ```
+        Copy/Paste the provided link in the browser
 
     You should see only `green` points.
+
+    `/!\ WARN` Keep the browser page open, we will use it again later!
 
 1. Deploy `blue` Rollout using Argo CD Application
 
     ```bash
-    kubectl apply -f argo-rollouts/blue-green/rollout-blue.yaml
+    kubectl apply -f blue-green/rollout-blue.yaml
     ```
 
 1. Wait for all pods to be up and running
 
-1. Observe status using Argo Rollouts kubectl plugin in the other window previously opened
+1. Watch status using Argo Rollouts kubectl plugin in the other window previously opened
 
     Now application runs `argoproj/rollouts-demo:green` and `argoproj/rollouts-demo:blue` simultaneously. The `argoproj/rollouts-demo:blue` is still considered `blue` available only via preview service `rollout-bluegreen-preview`, while `rollout-bluegreen-active` still serves `argoproj/rollouts-demo:green`
 
 1. Try access `preview (blue)` application
 
-    In a terminal window run
+    - Using `kubectl port-forward` (not always working)
+        ```bash
+        kubectl port-forward svc/rollout-bluegreen-preview 8080
+        ```
+        Open the browser and go to http://localhost:8080
 
-    ```bash
-    kubectl port-forward svc/rollout-bluegreen-preview 8081 -n default
-    ```
-
-    In another terminal window run (or directly open the browser)
-  
-    ```bash
-    open http://localhost:8081
-    ```
+    - Using `minikube service`
+        ```bash
+        minikube service --url rollout-bluegreen-preview
+        ```
+        Copy/Paste the provided link in the browser
 
     You should see now `blue` points, while in the previous browser page you should still only `green` points.
+
+    `/!\ WARN` Keep the browser page open, we will use it again later!
 
 1. Promote the Rollout
 
@@ -72,21 +75,7 @@
 
     After promotion, `blue` will be promoted as `active` and stable.
 
-1. Try access the `active (now blue)` application
-
-    In a terminal window run
-
-    ```bash
-    kubectl port-forward svc/rollout-bluegreen-active 8080 -n default
-    ```
-
-    In another terminal window run (or directly open the browser)
-
-    ```bash
-    open http://localhost:8080
-    ```
-
-    You should see only `blue` points.
+1. Go back to the browser, now in both pages you should see only `blue` points.
 
 ## 2. Deploy a Blue/Green Rollout using Argo CD integration
 
@@ -95,12 +84,12 @@
 1. Deploy `green` Rollout using Argo CD Application
 
     ```bash
-    kubectl apply -f argo-rollouts/rollout-bluegreen-app.yaml
+    kubectl apply -f blue-green_argo-cd_app/rollout-bluegreen-app.yaml
     ```
 
     At the beginning, both services `rollout-bluegreen-active` and `rollout-bluegreen-preview` have the same endpoints, pointing to `argoproj/rollouts-demo:green` pods
 
-1. Observe rollout in Argo CD UI
+1. Watch rollout in Argo CD UI
 
     ```bash
     kubectl port-forward svc/argocd-server -n argocd 8080:443
@@ -116,19 +105,21 @@
 
 1. Try access the `green` application
 
-    In a terminal window run
+    - Using `kubectl port-forward` (not always working)
+        ```bash
+        kubectl port-forward svc/rollout-bluegreen-active 8080 -n bluegreen
+        ```
+        Open the browser and go to http://localhost:8080
 
-    ```bash
-    kubectl port-forward svc/rollout-bluegreen-active 8081:8080 -n bluegreen
-    ```
-
-    In another terminal window run (or directly open the browser)
-  
-    ```bash
-    open http://localhost:8081
-    ```
+    - Using `minikube service`
+        ```bash
+        minikube service --url rollout-bluegreen-active
+        ```
+        Copy/Paste the provided link in the browser
 
     You should see only `green` points.
+
+    `/!\ WARN` Keep the browser page open, we will use it again later!
 
 1. Change container image tag parameter to trigger blue-green deployment process
 
@@ -138,25 +129,27 @@
 
     `(i) INFO` You should be able to perform this action also through Argo CD UI under `Applications / rollout-bluegreen / (rollout) rollout-bluegreen / Live manifest EDIT`
 
-1. Observe blue/green process in Argo CD UI
+1. Watch blue/green process in Argo CD UI
 
     Now application runs `argoproj/rollouts-demo:green` and `argoproj/rollouts-demo:blue` simultaneously. The `argoproj/rollouts-demo:blue` is still considered `blue` available only via preview service `rollout-bluegreen-preview`, while `rollout-bluegreen-active` still serves `argoproj/rollouts-demo:green`
 
-1. Try access the `blue` application
+1. Try access the `preview (blue)` application
 
-    In a terminal window run
+    - Using `kubectl port-forward` (not always working)
+        ```bash
+        kubectl port-forward svc/rollout-bluegreen-preview 8080
+        ```
+        Open the browser and go to http://localhost:8080
 
-    ```bash
-    kubectl port-forward svc/rollout-bluegreen-preview 8082:8080 -n bluegreen
-    ```
-
-    In another terminal window run (or directly open the browser)
-
-    ```bash
-    open http://localhost:8082
-    ```
+    - Using `minikube service`
+        ```bash
+        minikube service --url rollout-bluegreen-preview
+        ```
+        Copy/Paste the provided link in the browser
 
     You should see now `blue` points, while in the previous browser page you should still only `green` points.
+
+    `/!\ WARN` Keep the browser page open, we will use it again later!
 
 1. Promote rollout to `blue` 
 
@@ -177,23 +170,10 @@
     ```
 
     This promotes rollout to `blue` status and Rollout deletes old replica which runs `green`.
-  After promotion, `blue` will be promoted as `active` and stable.
 
-1. Try access the `active (now blue)` application
+    After promotion, `blue` will be promoted as `active` and stable.
 
-    In a terminal window run
-
-    ```bash
-    kubectl port-forward svc/rollout-bluegreen-active 8081 -n default
-    ```
-
-    In another terminal window run (or directly open the browser)
-    
-    ```bash
-    open http://localhost:8081
-    ```
-
-    You should see only `blue` points.
+1. Go back to the browser, now in both pages you should see only `blue` points.
 
 ---
 

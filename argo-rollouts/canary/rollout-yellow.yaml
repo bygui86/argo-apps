@@ -2,7 +2,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: rollout-canary
-  namespace: argo-rollouts
 spec:
   strategy:
     canary:

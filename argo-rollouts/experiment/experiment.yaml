@@ -1,0 +1,59 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Experiment
+metadata:
+  name: experiment-demo
+spec:
+  duration: 5m
+  templates:
+  - name: purple
+    replicas: 2
+    minReadySeconds: 10
+    selector:
+      matchLabels:
+        app: canary-demo
+        color: purple
+    template:
+      metadata:
+        labels:
+          app: canary-demo
+          color: purple
+      spec:
+        containers:
+        - name: rollouts-demo
+          image: argoproj/rollouts-demo:purple
+          imagePullPolicy: Always
+          ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+  - name: orange
+    minReadySeconds: 10
+    replicas: 2
+    selector:
+      matchLabels:
+        app: canary-demo
+        color: orange
+    template:
+      metadata:
+        labels:
+          app: canary-demo
+          color: orange
+      spec:
+        containers:
+        - name: rollouts-demo
+          # Note that this is intentionally using a "bad" version of the image, 
+          # which has a high error rate and will cause the experiment to fail
+          image: argoproj/rollouts-demo:bad-orange
+          imagePullPolicy: Always
+          ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+
+  analyses:
+  - name: purple
+    templateName: http-benchmark
+    args: [{name: host, value: purple}]
+  - name: orange
+    templateName: http-benchmark
+    args: [{name: host, value: orange}]
